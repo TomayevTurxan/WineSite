@@ -1,0 +1,36 @@
+@mixin hover {
+  box-shadow: 0 8px 8px 0 rgba(51, 48, 48, 0.2),
+    0 -8px 24px 0 rgba(234, 224, 218, 0.3);
+  text-decoration: none;
+}
+.ratings {
+  h1{
+    margin-bottom: 30px;
+  }
+  .ratings-box   {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px rgba(87, 87, 87, 0.1),
+      0 8px 8px 0 rgba(234, 224, 218, 0.3);
+      &:hover{
+        @include hover()
+      }
+    img {
+      width: 110%;
+      height: 160px;
+      background-position: 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    h3 {
+      text-align: center;
+      margin: 20px 0px;
+    }
+  }
+}

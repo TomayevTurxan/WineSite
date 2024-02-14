@@ -1,0 +1,170 @@
+.navigation-wine {
+  box-shadow: 0 1px 4px 0 rgba(30, 30, 30, 0.2);
+  .navbarHead {
+    padding: 20px 0px;
+    .vivinoNavbar {
+      display: flex;
+      align-items: center;
+      .logo {
+        svg {
+          width: 120px;
+          max-height: 64px;
+        }
+        margin-right: 35px;
+      }
+      .search {
+        display: flex;
+        input {
+          min-width: 300px;
+          max-width: 300px;
+          background-image: url(https://web-common.vivino.com/assets/search.svg);
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 400;
+          font-family: inherit;
+          position: relative;
+          z-index: 1030;
+          color: #333;
+          background-position: 16px;
+          background-size: 16px;
+          background-repeat: no-repeat;
+          outline: none;
+          padding: 4px 0 4px 48px;
+          border: 1px solid #dedede;
+          transition: width 0.6s ease-in-out;
+          height: 40px;
+          background-color: #fff;
+          border-radius: 32px;
+          width: 100%;
+        }
+      }
+    }
+    .navUl {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      ul {
+        display: flex;
+        .line {
+          border: 1px solid #eae0da;
+          height: 24px;
+          margin: 0 16px;
+        }
+        li {
+          margin-right: 25px;
+        }
+      }
+    }
+  }
+  .navigation-wineNav {
+    padding: 15px 0px;
+    ul {
+      display: flex;
+      li {
+        position: relative;
+        display: inline-block;
+        a {
+          padding: 0px 24px;
+          &:hover {
+            text-decoration: underline;
+            transition: 1s;
+          }
+        }
+        svg {
+          margin-right: 3px;
+          width: 30px;
+          height: 30px;
+        }
+        &:hover .navigation-wineNav-hover {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+    .navigation-wineNav-hover-newButton {
+      padding: 7px 12px;
+      display: flex;
+      border: none;
+      border-radius: 20%;
+      margin-left: 4px;
+      background-color: #f5d267;
+      span {
+        color: #1d1d1d;
+        text-align: center;
+        text-overflow: ellipsis;
+        margin-left: 4px;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+.navigation-wineNav-hover {
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  padding: 10px;
+  z-index: 1000;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  width: 680px;
+  background-color: #fff;
+  padding: 20px 30px;
+  .navigation-wineNav-ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    h4 {
+      margin: 15px 0px;
+      font-size: 1.2rem;
+    }
+    h3 {
+      margin-top: 18px;
+      font-size: 1rem;
+    }
+    li {
+      margin-bottom: 10px;
+      a {
+        font-size: 12px;
+        line-height: 24px;
+        font-weight: 400;
+        padding: 0 !important;
+      }
+    }
+  }
+}
+
+.navigation-wineNav-hover {
+  .navigation-wineNav-hover-topRated {
+    a {
+      padding: 0;
+      .navigation-wineNav-hover-topRated-title {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 70px;
+        max-height: 70px;
+        text-decoration: none;
+        background-color: #f7f3f0;
+        border-radius: 4px;
+        span {
+          align-items: center;
+          display: flex;
+          font-size: 14px;
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+  .navigation-wineNav-hover-allWines {
+    display: flex;
+    margin-top: 20px;
+    a {
+      font-size: 12px;
+      padding: 0 !important;
+    }
+  }
+}
