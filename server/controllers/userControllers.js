@@ -1,32 +1,25 @@
 const UserModel = require("../models/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = 'fcghbjgfgvh'
+const JWT_SECRET = "fcghbjgfgvh";
 const users_controller = {
   getAll: async (req, res) => {
     try {
-      const users = await UserModel.find({});
-      if (users.length == 0) {
-        res.status(204).send({
-          message: "empty array",
-        });
-      } else {
-        res.status(200).send({
-          message: "succes",
-          data: users,
-        });
-      }
+      const users = await UserModel.find({})
+        .populate("basket.product")
+        .populate("wishlist.product");
+      res.send(users);
     } catch (error) {
-      console.log("errorMessage:", error.message);
+      res.status(500).send("Internal Server Error");
     }
   },
   getOne: async (req, res) => {
-    const { id } = req.params;
-    const data = await UserModel.findById(id);
-    if (data !== undefined) {
-      res.status(200).send(data);
-    } else {
-      res.status(204).send("data not found!");
+    try {
+      const { id } = req.params;
+      const user = await UserModel.findById(id).populate("wishlist.product");
+      res.send(user);
+    } catch (error) {
+      res.status(500).send("Internal Server Error");
     }
   },
   //REGISTER
@@ -85,9 +78,7 @@ const users_controller = {
       const { userEmail, password } = req.body;
 
       const user = await UserModel.findOne({ userEmail });
-      console.log(
-        user
-      )
+      console.log(user);
 
       if (!user) {
         return res.status(404).json({ message: "User not found." });

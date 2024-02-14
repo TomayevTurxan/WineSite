@@ -6,13 +6,13 @@ const userSchema = new mongoose.Schema({
   profileImg: { type: String },
   basket: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: "wineSchema" },
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "wines" },
       count: { type: Number, default: 1 },
     },
   ],
   wishlist: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: "wineSchema" },
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "wines" },
     },
   ],
   password: { type: String },
