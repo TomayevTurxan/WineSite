@@ -1,6 +1,7 @@
 import UserRoot from "../UserRoot";
 import Login from "../components/login";
 import Register from "../components/register";
+import Basket from "../pages/basket";
 import Detail from "../pages/detail";
 import FilterWine from "../pages/filterWine";
 import Home from "../pages/home";
@@ -18,8 +19,12 @@ export const ROUTES = [
         element: <FilterWine />,
       },
       {
-        path: "/detail",
+        path: "/detail/:id",
         element: <Detail />,
+      },
+      {
+        path: "/basket",
+        element: <Basket />,
       },
       {
         path: "/login",

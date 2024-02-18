@@ -45,6 +45,7 @@ const wines_controller = {
         img: result.secure_url,
         ...req.body,
       });
+      console.log("reqboyd",req.body)
       await wine.save();
       res.status(200).send("wineItems Created");
     } catch (error) {

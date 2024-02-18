@@ -1,5 +1,5 @@
 import Select from "@mui/material/Select";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -18,36 +18,64 @@ const FilterWine = () => {
   const [bestPicks, setBestPicks] = useState("");
   const [value] = useState(4);
   const [price, setPrice] = useState({ min: 10, max: 50 });
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [filteredWines, setFilteredWines] = useState([]);
+  const [selectedType, setSelectedType] = useState(
+    JSON.parse(localStorage.getItem("selectedType"))
+      ? JSON.parse(localStorage.getItem("selectedType"))
+      : []
+  );
+  const [selectedCountry, setSelectedCountry] = useState(
+    JSON.parse(localStorage.getItem("selectedCountry"))
+      ? JSON.parse(localStorage.getItem("selectedCountry"))
+      : []
+  );
+
   const handleChange = (event) => {
     setBestPicks(event.target.value);
   };
-  console.log("wines", wines);
+  // console.log("wines", win es);
   const handleSliderChange = (value) => {
     setPrice({ min: value[0], max: value[1] });
   };
-  const filteredWines = selectedType
-    ? wines.filter((wine) => wine.type === selectedType)
-    : wines;
-  const filteredWinesByCountry = selectedCountry
-    ? filteredWines.filter((wine) => wine.country === selectedCountry)
-    : filteredWines;
 
-  const filteredWinesByPriceRange = filteredWinesByCountry.filter(
-    (wine) => wine.price >= price.min && wine.price <= price.max
-  );
+  useEffect(() => {
+    let updatedWines = wines;
+
+    if (selectedType.length > 0) {
+      updatedWines = updatedWines.filter((wine) =>
+        selectedType.includes(wine.type)
+      );
+    }
+
+    if (selectedCountry.length > 0) {
+      updatedWines = updatedWines.filter((wine) =>
+        selectedCountry.includes(wine.country)
+      );
+    }
+
+    updatedWines = updatedWines.filter(
+      (wine) => wine.price >= price.min && wine.price <= price.max
+    );
+
+    setFilteredWines(updatedWines);
+  }, [wines, selectedType, selectedCountry, price]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
+    localStorage.setItem("selectedType", JSON.stringify(selectedType));
+  }, [selectedCountry, selectedType]);
   //Token
   // const token = getCookie("token");
   // const decode = jwtDecode(token);
   // console.log("decode", decode);
+
   return (
     <section className="filterWine">
       <div className="container">
         <div className="row mt-5">
           <h2>
-            Showing {filteredWinesByCountry.length} wines between $10 - $50
-            rated above 3.8 stars
+            Showing {filteredWines.length} wines between $10 - $50 rated above
+            3.8 stars
           </h2>
           <div className="filterWine-bestPicks">
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small" style={{}}>
@@ -83,42 +111,84 @@ const FilterWine = () => {
                 <div className="filterWine-wineTypes">
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button onClick={() => setSelectedType("Red")}>
+                      <button
+                        className={selectedType === "Red" ? "selected" : ""}
+                        onClick={() =>
+                          setSelectedType(selectedType === "Red" ? "" : "Red")
+                        }
+                      >
                         Red
                       </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button onClick={() => setSelectedType("White")}>
+                      <button
+                        className={selectedType === "White" ? "selected" : ""}
+                        onClick={() =>
+                          setSelectedType(
+                            selectedType === "White" ? "" : "White"
+                          )
+                        }
+                      >
                         White
                       </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button onClick={() => setSelectedType("Sparkling")}>
+                      <button
+                        className={
+                          selectedType === "Sparkling" ? "selected" : ""
+                        }
+                        onClick={() =>
+                          setSelectedType(
+                            selectedType === "Sparkling" ? "" : "Sparkling"
+                          )
+                        }
+                      >
                         Sparkling
                       </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button onClick={() => setSelectedType("Rose")}>
+                      <button
+                        className={selectedType === "Rose" ? "selected" : ""}
+                        onClick={() =>
+                          setSelectedType(selectedType === "Rose" ? "" : "Rose")
+                        }
+                      >
                         Rose
                       </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button onClick={() => setSelectedType("Dessert")}>
+                      <button
+                        className={selectedType === "Dessert" ? "selected" : ""}
+                        onClick={() =>
+                          setSelectedType(
+                            selectedType === "Dessert" ? "" : "Dessert"
+                          )
+                        }
+                      >
                         Dessert
                       </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button onClick={() => setSelectedType("Fortified")}>
+                      <button
+                        className={
+                          selectedType === "Fortified" ? "selected" : ""
+                        }
+                        onClick={() =>
+                          setSelectedType(
+                            selectedType === "Fortified" ? "" : "Fortified"
+                          )
+                        }
+                      >
                         Fortified
                       </button>
                     </Link>
@@ -263,29 +333,50 @@ const FilterWine = () => {
                 />
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Argentina")}>
-                      <img
-                        src="https://web-common.vivino.com/assets/countryFlags/AR-48.png"
-                        alt=""
-                      />
+                    <button
+                      className={
+                        selectedCountry === "Argentina" ? "selected" : ""
+                      }
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Argentina" ? "" : "Argentina"
+                        )
+                      }
+                    >
+                      <img src="https://web-common.vivino.com/assets/countryFlags/AR-48.png" />
                       Argentina
                     </button>
                   </Link>
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Australia")}>
-                      <img
-                        src="https://web-common.vivino.com/assets/countryFlags/AU-48.png"
-                        alt=""
-                      />
+                    <button
+                      className={
+                        selectedCountry === "Australia" ? "selected" : ""
+                      }
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Australia" ? "" : "Australia"
+                        )
+                      }
+                    >
+                      <img src="https://web-common.vivino.com/assets/countryFlags/AU-48.png" />
                       Australia
                     </button>
                   </Link>
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Australia")}>
+                    <button
+                      className={
+                        selectedCountry === "Austria" ? "selected" : ""
+                      }
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Austria" ? "" : "Austria"
+                        )
+                      }
+                    >
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/AT-48.png"
                         alt=""
@@ -296,7 +387,14 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Chile")}>
+                    <button
+                      className={selectedCountry === "Chile" ? "selected" : ""}
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Chile" ? "" : "Chile"
+                        )
+                      }
+                    >
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/CL-48.png"
                         alt=""
@@ -307,7 +405,14 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("France")}>
+                    <button
+                      className={selectedCountry === "France" ? "selected" : ""}
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "France" ? "" : "France"
+                        )
+                      }
+                    >
                       <img
                         src="	https://web-common.vivino.com/assets/countryFlags/FR-48.png"
                         alt=""
@@ -318,7 +423,16 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Germany")}>
+                    <button
+                      className={
+                        selectedCountry === "Germany" ? "selected" : ""
+                      }
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Germany" ? "" : "Germany"
+                        )
+                      }
+                    >
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/DE-48.png"
                         alt=""
@@ -329,7 +443,14 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Italy")}>
+                    <button
+                      className={selectedCountry === "Italy" ? "selected" : ""}
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Italy" ? "" : "Italy"
+                        )
+                      }
+                    >
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/IT-48.png"
                         alt=""
@@ -340,7 +461,16 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Portugal")}>
+                    <button
+                      className={
+                        selectedCountry === "Portugal" ? "selected" : ""
+                      }
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Portugal" ? "" : "Portugal"
+                        )
+                      }
+                    >
                       <img
                         src="	https://web-common.vivino.com/assets/countryFlags/PT-48.png"
                         alt=""
@@ -351,7 +481,14 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button onClick={() => setSelectedCountry("Spain")}>
+                    <button
+                      className={selectedCountry === "Spain" ? "selected" : ""}
+                      onClick={() =>
+                        setSelectedCountry(
+                          selectedCountry === "Spain" ? "" : "Spain"
+                        )
+                      }
+                    >
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/ES-48.png"
                         alt=""
@@ -363,8 +500,8 @@ const FilterWine = () => {
               </div>
             </div>
             <div className="col-xl-8 mb-5 pl-3">
-              {filteredWinesByPriceRange.map((wine, idx) => (
-                <Link to="/detail" key={idx}>
+              {filteredWines.map((wine, idx) => (
+                <Link to={`/detail/${wine._id}`} key={idx}>
                   <div className="filterWine-card">
                     <div className="filterWine-card-contains">
                       <div className="filterWine-card-img">
@@ -390,9 +527,12 @@ const FilterWine = () => {
                             }}
                           />
                           <span>56 ratings</span>
-                          <button>${wine.price}</button>
+                          <Link to="/basket">
+                              <button>${wine.price}</button>
+                          </Link>
                         </div>
                       </div>
+                      
                     </div>
                   </div>
                 </Link>

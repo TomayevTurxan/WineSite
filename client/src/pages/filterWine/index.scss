@@ -23,7 +23,7 @@
   border-radius: 2.5em;
   transition: all 0.1s ease-in;
   background-color: white;
-  img{
+  img {
     width: 10px;
     height: 10px;
     margin-right: 5px;
@@ -163,26 +163,29 @@
           span {
             display: flex;
           }
-          button {
-            justify-content: center;
+          a {
             width: 100%;
-            color: #1e1e1e;
-            display: inline-flex;
-            padding: 7px 16px 9px;
-            position: relative;
-            font-size: 1rem;
-            min-width: 40px;
-            min-height: 40px;
-            transition: transform 0.1s ease;
-            font-weight: 500;
-            border-color: white;
-            color: white;
-            border-style: solid;
-            border-width: 1px;
-            border-radius: 80px;
-            text-transform: none;
-            background-color: #00845f;
-            margin-top: 30px;
+            button {
+              justify-content: center;
+              width: 100%;
+              color: #1e1e1e;
+              display: inline-flex;
+              padding: 7px 16px 9px;
+              position: relative;
+              font-size: 1rem;
+              min-width: 40px;
+              min-height: 40px;
+              transition: transform 0.1s ease;
+              font-weight: 500;
+              border-color: white;
+              color: white;
+              border-style: solid;
+              border-width: 1px;
+              border-radius: 80px;
+              text-transform: none;
+              background-color: #00845f;
+              margin-top: 30px;
+            }
           }
         }
       }
@@ -219,4 +222,9 @@
   .ant-slider-track {
   background-color: rgb(186, 22, 40);
   color: rgb(186, 22, 40);
+}
+
+.filterWine-wineTypes-choice button.selected {
+  background-color: #ba1628 !important;
+  color: white !important;
 }

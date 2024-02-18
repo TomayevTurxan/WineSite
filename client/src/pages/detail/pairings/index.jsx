@@ -1,5 +1,9 @@
+import { useContext } from "react";
+import { DetailWineContextItem } from "../../../context/DetailWineContext";
 import "./index.scss";
 const Pairings = () => {
+  let {wine} = useContext(DetailWineContextItem);
+
   return (
     <section className="pairings">
       <div className="container">
@@ -17,7 +21,7 @@ const Pairings = () => {
           <div className="col-xl-8 pairings-head">
             <img
               className="pairings-head-img"
-              src="https://images.vivino.com/thumbs/VkI303byQ12cjSgmxtv0Lw_pb_x300.png"
+              src={wine.img}
             />
             <div className="pairings-blog">
               <div className="col-xl-3 pairings-blog-type">

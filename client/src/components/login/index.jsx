@@ -2,12 +2,21 @@ import "./style.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast, { Toaster } from "react-hot-toast";
 import { setCookie } from "../../helpers";
+import { UserContext } from "../../context/UserContext";
+import { useContext, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 function Login() {
+  const { fetchBasketData, user,fetchWishlistData ,setToken,setUser} = useContext(UserContext);
+  useEffect(() => {
+    fetchBasketData();
+  }, []);
+  console.log("user", user);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -23,21 +32,16 @@ function Login() {
       // console.log("values", values);
       formik.resetForm();
       try {
-        const response = await axios.post(
-          "http://localhost:3000/users/login",
-          values
-        );
-        setCookie("token", response.data.token, "1h");
-
-        // console.log("response",response.data.token)
-        if (response.status === 201) {
-          toast.success("Successfully logined!");
-        } else {
-          throw new Error("Failed to Login");
-        }
+        const res = await axios.post("http://localhost:3000/users/login", values);
+        toast.success("Successfully Logined!");
+        res.status === 201 && setToken(res.data.token);
+        res.status === 201 && setCookie("token", res.data.token, "600h");
+        const decoded = res.status === 201 && jwtDecode(res.data.token);
+        setUser(decoded);
+        await fetchBasketData();
+        await fetchWishlistData();
       } catch (error) {
-        console.error("Registration Error:", error);
-        alert("Registration failed. Please try again.");
+        toast.error("Wrong Details");
       }
     },
   });
@@ -82,7 +86,7 @@ function Login() {
                   value={formik.values.password}
                 />
               </div>
-              <input className="button" type="submit" value="Register" />
+              <input className="button" type="submit" value="Login" />
               <div
                 style={{
                   display: "flex",

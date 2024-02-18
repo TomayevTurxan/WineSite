@@ -1,17 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Rating from "@mui/material/Rating";
-
 import "./index.scss";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import WineTaste from "./wineTaste";
 import Pairings from "./pairings";
 import SmartWay from "../smartWay";
 import Highlights from "./highlights";
 import FactWine from "./factWine";
 import Discover from "../discover";
+import axios from "axios";
+import { DetailWineContextItem } from "../../context/DetailWineContext";
 const Detail = () => {
   const [value] = useState(4);
-
+  let { id } = useParams();
+  let {wine,setWine} = useContext(DetailWineContextItem);
+  console.log("id", id);
+  useEffect(() => {
+    const data = async () => {
+      const res = await axios.get(`http://localhost:3000/wines/${id}`);
+      setWine(res.data);
+    };
+    data();
+  }, []);
+  console.log("data", wine);
   return (
     <>
       <section className="detail">
@@ -21,34 +32,33 @@ const Detail = () => {
               <div className="detail-blog">
                 <div className="col-xl-3">
                   <img
-                    src="	https://images.vivino.com/thumbs/VkI303byQ12cjSgmxtv0Lw_pb_x600.png"
-                    alt=""
+                    src={wine.img}
                   />
                 </div>
                 <div className="col-xl-9">
                   <div className="detail-blog-info">
-                    <span className="detail-blog-info-winery">Echeverría</span>
+                    <span className="detail-blog-info-winery">{wine.winery}</span>
                     <h2>
-                      Romi Orange <span>2022</span>
+                      {wine.grapes} <span>2022</span>
                     </h2>
                     <div className="detail-blog-list">
                       <ul>
                         <li>
-                          <Link>Chile</Link>
+                          <Link>{wine.country}</Link>
                           {/* country */}
                         </li>
                         <li>
                           <span className="circle"></span>
                         </li>
                         <li>
-                          <Link>Echeverri</Link>
+                          <Link>{wine.winery}</Link>
                           {/* winery */}
                         </li>
                         <li>
                           <span className="circle"></span>
                         </li>
                         <li>
-                          <Link>Sparkling wine</Link>
+                          <Link>{wine.grapes}</Link>
                           {/* grapes */}
                         </li>
                         <li>
@@ -124,12 +134,12 @@ const Detail = () => {
             <div className="col-xl-4">
               <div className="detail-basket">
                 <div className="detail-basket-price">
-                  <span>$225.50</span>
+                  <span>${wine.price}</span>
                   <p>Price is per bottle</p>
                 </div>
                 <div className="detail-basket-calculate">
                   <div className="detail-basket-calculate-minus">-</div>
-                  <div className="detail-basket-calculate-price">36</div>
+                  <div className="detail-basket-calculate-price">1</div>
                   <div className="detail-basket-calculate-plus">+</div>
                 </div>
                 <div className="detail-basket-button">
@@ -251,7 +261,7 @@ const Detail = () => {
       <SmartWay />
       <Highlights />
       <FactWine />
-      <Discover />  
+      <Discover />
     </>
   );
 };

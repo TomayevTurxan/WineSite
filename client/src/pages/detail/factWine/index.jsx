@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import "./index.scss";
+import { useContext } from "react";
+import { DetailWineContextItem } from "../../../context/DetailWineContext";
 const FactWine = () => {
+  let {wine} = useContext(DetailWineContextItem);
+
   return (
     <section className="factWine">
       <div className="container">
@@ -32,7 +36,7 @@ const FactWine = () => {
                     </div>
                   </th>
                   <td className="wineFacts-fact">
-                    <Link className="wineFacts-link">Echeverría</Link>
+                    <Link className="wineFacts-link">{wine.winery}</Link>
                   </td>
                 </tr>
                 <tr className="wineFactRow">
@@ -64,7 +68,7 @@ const FactWine = () => {
                     </div>
                   </th>
                   <td className="wineFacts-fact">
-                    <Link className="wineFacts-link"> Sauvignon Blanc</Link>
+                    <Link className="wineFacts-link"> {wine.grapes}</Link>
                   </td>
                 </tr>
                 <tr className="wineFactRow">
@@ -94,7 +98,7 @@ const FactWine = () => {
                   <td className="wineFacts-fact">
                     <Link className="wineFacts-link">
                       {" "}
-                      Chile / Central Valley / Curico Valley
+                      {wine.country}
                     </Link>
                   </td>
                 </tr>
@@ -119,11 +123,11 @@ const FactWine = () => {
                           ></path>
                         </svg>
                       </span>
-                      <span className="wineFacts-headerLabel">Wine style</span>
+                      <span className="wineFacts-headerLabel">Wine type</span>
                     </div>
                   </th>
                   <td className="wineFacts-fact">
-                    <Link className="wineFacts-link">Chile Sparkling</Link>
+                    <Link className="wineFacts-link">{wine.type}</Link>
                   </td>
                 </tr>
                 <tr className="wineFactRow">
@@ -149,7 +153,7 @@ const FactWine = () => {
                     </div>
                   </th>
                   <td className="wineFacts-fact">
-                    Contains sulfites
+                    Contains {wine.allergies}
                   </td>
                 </tr>
                 {/*  
