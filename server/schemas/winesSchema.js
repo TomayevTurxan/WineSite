@@ -2,12 +2,14 @@ const mongoose = require("mongoose");
 
 const wineSchema = new mongoose.Schema(
   {
-    name: { type: String },
+    winery: { type: String },
+    grapes: { type: String },
     img: { type: String },
+    price: { type: Number },
     discount: { type: Number },
     country: { type: String },
     type: { type: String },
-    rating: { type: Number },
+    saleCount: { type: Number },
     pairings: [{ type: String }],
     comment: [{ type: String }],
     alchocolDegree: { type: Number },

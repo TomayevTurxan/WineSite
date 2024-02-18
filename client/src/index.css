@@ -2,8 +2,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: sans-serif;
 }
-section{
+section {
   margin-bottom: 70px;
 }
 ul {

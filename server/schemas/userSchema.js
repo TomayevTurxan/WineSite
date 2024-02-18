@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 // Define user schema
 const userSchema = new mongoose.Schema({
-  userName: { type: String },
-  userEmail: { type: String },
+  firstName: { type: String },
+  lastName: { type: String },
+  email: { type: String },
   profileImg: { type: String },
+  gender: { type: String },
+  country: { type: String },
+  isAdmin: { type: Boolean },
   basket: [
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: "wines" },

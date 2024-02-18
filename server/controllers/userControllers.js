@@ -25,13 +25,21 @@ const users_controller = {
   //REGISTER
   post: async (req, res) => {
     try {
-      const { password, confirmPassword, userEmail, profileImg, userName } =
-        req.body;
+      const {
+        password,
+        confirmPassword,
+        email,
+        profileImg,
+        firstName,
+        lastName,
+        gender,
+        country,
+      } = req.body;
       if (password !== confirmPassword) {
         return res.status(400).send({ message: "Passwords do not match." });
       }
 
-      const existingUser = await UserModel.findOne({ userEmail });
+      const existingUser = await UserModel.findOne({ email });
       if (existingUser) {
         return res
           .status(400)
@@ -41,9 +49,13 @@ const users_controller = {
       const hashedPassword = await bcrypt.hash(password, 10);
       console.log(hashedPassword);
       const user = new UserModel({
-        userName,
+        firstName,
+        lastName,
+        email,
         profileImg,
-        userEmail,
+        gender,
+        country,
+        isAdmin: false,
         password: hashedPassword,
         confirmPassword: hashedPassword,
       });
@@ -75,9 +87,9 @@ const users_controller = {
   //Login
   login: async (req, res) => {
     try {
-      const { userEmail, password } = req.body;
+      const { email, password } = req.body;
 
-      const user = await UserModel.findOne({ userEmail });
+      const user = await UserModel.findOne({ email });
       console.log(user);
 
       if (!user) {
@@ -90,12 +102,19 @@ const users_controller = {
       }
 
       const token = jwt.sign(
-        { id: user._id, userEmail: user.userEmail },
+        {
+          id: user._id,
+          email: user.email,
+          profileImg: user.profileImg,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          country: user.country,
+        },
         JWT_SECRET,
         { expiresIn: "1h" }
       );
 
-      res.status(200).json({ message: "Login successful", token });
+      res.status(201).json({ message: "Login successful", token });
     } catch (error) {
       console.error("Login error:", error);
       res.status(500).json({ message: "Server error" });

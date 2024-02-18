@@ -1,16 +1,17 @@
 const WineModel = require("../models/wines.model");
+const cloudinary = require("../utils/cloudinaryWine");
 const wines_controller = {
   getAll: async (req, res) => {
     try {
-      const users = await WineModel.find({});
-      if (users.length == 0) {
+      const wines = await WineModel.find({});
+      if (wines.length == 0) {
         res.status(204).send({
           message: "empty array",
         });
       } else {
         res.status(200).send({
           message: "succes",
-          data: users,
+          data: wines,
         });
       }
     } catch (error) {
@@ -33,18 +34,36 @@ const wines_controller = {
     res.status(200).send(newWine);
   },
 
+  //post cloudinary
+  winePost: async (req, res) => {
+    const img = req.file.path;
+    try {
+      const result = await cloudinary.uploader.upload(img, {
+        folder: "wines",
+      });
+      const wine = new WineModel({
+        img: result.secure_url,
+        ...req.body,
+      });
+      await wine.save();
+      res.status(200).send("wineItems Created");
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  },
+
   delete: async (req, res) => {
     const { id } = req.params;
-    const deletedUser = await WineModel.findByIdAndDelete(id);
-    const users = await WineModel.find({});
-    if (deletedUser === -1) {
+    const deletedWine = await WineModel.findByIdAndDelete(id);
+    const wines = await WineModel.find({});
+    if (deletedWine === -1) {
       res.send({
         message: "data not found!",
       });
     } else {
       res.status(200).send({
         message: "data deleted successfully",
-        data: users,
+        data: wines,
       });
     }
   },

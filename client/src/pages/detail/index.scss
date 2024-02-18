@@ -1,0 +1,198 @@
+@mixin reklam {
+  display: flex;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #fafafa;
+  width: 100%;
+  margin-bottom: 8px;
+  a {
+    display: flex;
+    align-items: center;
+    p {
+      margin: 0;
+      color: #1e1e1e;
+      text-align: left;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    img {
+      margin-right: 10px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+}
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin btn {
+  @include center();
+  font-size: 26px;
+  line-height: normal;
+  font-weight: 400;
+  border-radius: 40px;
+  background: #fff;
+  color: #a8a5a3;
+  cursor: pointer;
+  flex-basis: 25%;
+  max-width: 40px;
+  outline: none;
+}
+
+@mixin wineTypesButton {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: normal;
+  font-weight: 400;
+  min-width: 70px;
+  padding: 8px;
+  border: 1px solid #00845f;
+  border-radius: 2.5em;
+  transition: all 0.1s ease-in;
+  background-color: #00845f;
+  img {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+  &:hover {
+    background-color: #00845f;
+  }
+}
+.detail {
+  background-color: #f7f3f0;
+  padding: 50px 0px;
+  .detail-blog {
+    display: flex;
+    img {
+      height: 500px;
+      width: 143px;
+    }
+    .detail-blog-info {
+      padding: 20px;
+      .detail-blog-info-winery {
+        font-size: 26px;
+      }
+      h2 {
+        padding: 20px 0px;
+        font-weight: 700;
+      }
+      .detail-blog-list {
+        padding-bottom: 48px;
+        ul {
+          display: flex;
+          li {
+            a {
+              font-size: 16px;
+              line-height: 24px;
+              font-weight: 400;
+              text-decoration: underline;
+              padding-right: 8px;
+            }
+          }
+          .circle {
+            &::after {
+              content: "";
+              width: 4px;
+              height: 4px;
+              background-color: black;
+              border-radius: 50%;
+              display: inline-block;
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+      .detail-blog-rating {
+        display: flex;
+        padding: 15px 0px;
+        h1 {
+          margin-right: 10px;
+        }
+        .detail-blog-rating-star {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      .detail-blog-wishlist {
+        display: flex;
+        align-items: center;
+        a {
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+.detail {
+  .detail-blog-info-reklam {
+    margin-top: 50px;
+    .detail-blog-info-reklam-one {
+      @include reklam;
+    }
+    .detail-blog-info-reklam-two {
+      @include reklam;
+    }
+  }
+}
+
+//calculate
+.detail {
+  .detail-basket {
+    padding: 24px;
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: column;
+    color: #1e1e1e;
+    background-color: white;
+    .detail-basket-price {
+      span {
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 48px;
+      }
+    }
+    .detail-basket-calculate {
+      display: flex;
+      justify-content: space-between;
+      height: 40px;
+      border-radius: 40px;
+      border: 1px solid #eae0da;
+      .detail-basket-calculate-minus {
+        @include btn();
+      }
+      .detail-basket-calculate-plus {
+        @include btn();
+      }
+      .detail-basket-calculate-price {
+        @include center();
+      }
+    }
+    .detail-basket-button {
+      margin-top: 30px;
+      button {
+        @include wineTypesButton();
+      }
+    }
+    .detail-basket-info {
+      margin-top: 30px;
+      svg {
+        margin-right: 8px;
+      }
+    }
+  }
+}

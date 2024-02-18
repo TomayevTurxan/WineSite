@@ -1,32 +1,53 @@
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import "./index.scss";
 import { Link } from "react-router-dom";
-import Rating from "@mui/material/Rating";
 import { Slider } from "antd";
 import { Input } from "antd";
+import { WineContextItem } from "../../context/WineContext";
+import { Rating } from "@mui/material";
+// import { jwtDecode } from "jwt-decode";
+// import { getCookie } from "../../helpers";
+
 const { Search } = Input;
 const FilterWine = () => {
+  const { wines } = useContext(WineContextItem);
   const [bestPicks, setBestPicks] = useState("");
   const [value] = useState(4);
-  const [price, setPrice] = useState(20);
-
+  const [price, setPrice] = useState({ min: 10, max: 50 });
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const handleChange = (event) => {
     setBestPicks(event.target.value);
   };
-
+  console.log("wines", wines);
   const handleSliderChange = (value) => {
-    setPrice(value); // Update price state when slider value changes
+    setPrice({ min: value[0], max: value[1] });
   };
+  const filteredWines = selectedType
+    ? wines.filter((wine) => wine.type === selectedType)
+    : wines;
+  const filteredWinesByCountry = selectedCountry
+    ? filteredWines.filter((wine) => wine.country === selectedCountry)
+    : filteredWines;
+
+  const filteredWinesByPriceRange = filteredWinesByCountry.filter(
+    (wine) => wine.price >= price.min && wine.price <= price.max
+  );
+  //Token
+  // const token = getCookie("token");
+  // const decode = jwtDecode(token);
+  // console.log("decode", decode);
   return (
     <section className="filterWine">
       <div className="container">
         <div className="row mt-5">
           <h2>
-            Showing 11656 Red wines between $10 - $50 rated above 3.8 stars
+            Showing {filteredWinesByCountry.length} wines between $10 - $50
+            rated above 3.8 stars
           </h2>
           <div className="filterWine-bestPicks">
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small" style={{}}>
@@ -62,32 +83,44 @@ const FilterWine = () => {
                 <div className="filterWine-wineTypes">
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button>Red</button>
+                      <button onClick={() => setSelectedType("Red")}>
+                        Red
+                      </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button>White</button>
+                      <button onClick={() => setSelectedType("White")}>
+                        White
+                      </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button>Sparkling</button>
+                      <button onClick={() => setSelectedType("Sparkling")}>
+                        Sparkling
+                      </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button>Rose</button>
+                      <button onClick={() => setSelectedType("Rose")}>
+                        Rose
+                      </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button>Dessert</button>
+                      <button onClick={() => setSelectedType("Dessert")}>
+                        Dessert
+                      </button>
                     </Link>
                   </div>
                   <div className="filterWine-wineTypes-choice">
                     <Link>
-                      <button>Fortified</button>
+                      <button onClick={() => setSelectedType("Fortified")}>
+                        Fortified
+                      </button>
                     </Link>
                   </div>
                 </div>
@@ -97,12 +130,15 @@ const FilterWine = () => {
                   <h2>Price</h2>
                   <span>USD</span>
                 </div>
-                <span>${price}</span>
+                <span>
+                  ${price.min} - ${price.max}
+                </span>
                 <Slider
                   size="small"
+                  range
                   min={10}
                   max={50}
-                  value={price}
+                  defaultValue={[price.min, price.max]}
                   onChange={handleSliderChange}
                   valueLabelDisplay="auto"
                 />
@@ -227,7 +263,7 @@ const FilterWine = () => {
                 />
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Argentina")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/AR-48.png"
                         alt=""
@@ -238,7 +274,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Australia")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/AU-48.png"
                         alt=""
@@ -249,7 +285,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Australia")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/AT-48.png"
                         alt=""
@@ -260,7 +296,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Chile")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/CL-48.png"
                         alt=""
@@ -271,7 +307,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("France")}>
                       <img
                         src="	https://web-common.vivino.com/assets/countryFlags/FR-48.png"
                         alt=""
@@ -282,7 +318,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Germany")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/DE-48.png"
                         alt=""
@@ -293,7 +329,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Italy")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/IT-48.png"
                         alt=""
@@ -304,7 +340,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Portugal")}>
                       <img
                         src="	https://web-common.vivino.com/assets/countryFlags/PT-48.png"
                         alt=""
@@ -315,7 +351,7 @@ const FilterWine = () => {
                 </div>
                 <div className="filterWine-wineTypes-choice">
                   <Link>
-                    <button>
+                    <button onClick={() => setSelectedCountry("Spain")}>
                       <img
                         src="https://web-common.vivino.com/assets/countryFlags/ES-48.png"
                         alt=""
@@ -327,72 +363,40 @@ const FilterWine = () => {
               </div>
             </div>
             <div className="col-xl-8 mb-5 pl-3">
-              <div className="filterWine-card">
-                <div className="filterWine-card-contains">
-                  <div className="filterWine-card-img">
-                    <img
-                      src="https://images.vivino.com/thumbs/u2vMxpcZRzSRpEKgjFebXg_pb_x300.png"
-                      alt=""
-                    />
-                  </div>
-                  <div className="filterWine-card-info">
-                    <span>Thunevin-Calvet</span>
-                    <h5>Maury 1983</h5>
-                    <div className="filterWine-card-info-country">
-                      <img src="https://web-common.vivino.com/assets/countryFlags/FR-48.png" />
-                      <span>Maury,France</span>
+              {filteredWinesByPriceRange.map((wine, idx) => (
+                <Link to="/detail" key={idx}>
+                  <div className="filterWine-card">
+                    <div className="filterWine-card-contains">
+                      <div className="filterWine-card-img">
+                        <img src={wine.img} alt="" />
+                      </div>
+                      <div className="filterWine-card-info">
+                        <span>{wine.winery}</span>
+                        <h5>{wine.grapes} 2022</h5>
+                        <div className="filterWine-card-info-country">
+                          <img src="https://web-common.vivino.com/assets/countryFlags/FR-48.png" />
+                          <span>{wine.country}</span>
+                        </div>
+                      </div>
+                      <div className="filterWine-card-price">
+                        <div className="filterWine-card-rating">
+                          <h1>4.4</h1>
+                          <Rating
+                            name="read-only"
+                            value={value}
+                            readOnly
+                            style={{
+                              color: "#891826",
+                            }}
+                          />
+                          <span>56 ratings</span>
+                          <button>${wine.price}</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="filterWine-card-price">
-                    <div className="filterWine-card-rating">
-                      <h1>4.4</h1>
-                      <Rating
-                        name="read-only"
-                        value={value}
-                        readOnly
-                        style={{
-                          color: "#891826",
-                        }}
-                      />
-                      <span>56 ratings</span>
-                      <button>$43.44</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="filterWine-card">
-                <div className="filterWine-card-contains">
-                  <div className="filterWine-card-img">
-                    <img
-                      src="https://images.vivino.com/thumbs/u2vMxpcZRzSRpEKgjFebXg_pb_x300.png"
-                      alt=""
-                    />
-                  </div>
-                  <div className="filterWine-card-info">
-                    <span>Thunevin-Calvet</span>
-                    <h5>Maury 1983</h5>
-                    <div className="filterWine-card-info-country">
-                      <img src="https://web-common.vivino.com/assets/countryFlags/FR-48.png" />
-                      <span>Maury,France</span>
-                    </div>
-                  </div>
-                  <div className="filterWine-card-price">
-                    <div className="filterWine-card-rating">
-                      <h1>4.4</h1>
-                      <Rating
-                        name="read-only"
-                        value={value}
-                        readOnly
-                        style={{
-                          color: "#891826",
-                        }}
-                      />
-                      <span>56 ratings</span>
-                      <button>$43.44</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
