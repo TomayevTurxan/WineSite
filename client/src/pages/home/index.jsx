@@ -1,15 +1,18 @@
-import BestPickes from "../bestPickes";
+// import BestPickes from "../bestPickes";
 import Discover from "../discover";
-import Ratings from "../ratings";
-import SmartWay from "../smartWay";
+// import Ratings from "../ratings";
+// import SmartWay from "../smartWay";
+
+import RightWine from "../rightWine";
 
 const Home = () => {
   return (
     <>
-      <BestPickes/>
+      <RightWine />
+      {/* <BestPickes/>
       <Ratings/>
-      <SmartWay/>
-      <Discover/>
+      <SmartWay/> */}
+      <Discover />
     </>
   );
 };

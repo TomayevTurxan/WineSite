@@ -1,0 +1,20 @@
+.rightWine {
+  margin: 0;
+  background-repeat: round;
+  background-image: url("https://www.vivino.com/packs/5997fbcc6f26c5936af550a0f5c826ba.jpg");
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .rightWine-head {
+    .rightWine-title {
+      position: relative;
+      h1 {
+        color: white;
+        font-size: 56px;
+        line-height: 64px;
+        font-weight: 400;
+      }
+    }
+  }
+}

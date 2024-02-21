@@ -6,7 +6,6 @@ import { getCookie } from "../helpers";
 export const UserContext = createContext();
 
 const  UserContextProvider = ({ children }) =>{
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [basketArr, setBasketArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [wishlistArr, setWishlistArr] = useState([]);
@@ -31,7 +30,6 @@ const  UserContextProvider = ({ children }) =>{
           `http://localhost:3000/users/${user.id}/basket`
         );
         setBasketArr(res.data);
-        console.log("basketar", basketArr);
       }
     } catch (error) {
       console.error("Error fetching wishlist data:", error);
@@ -53,18 +51,16 @@ const  UserContextProvider = ({ children }) =>{
     }
   };
 
-  const handleBasket = async (id) => {
+  const handleBasket = async (id,productId) => {
     if (user) {
       try {
         setIsLoading(true);
         const res = await axios.post(
           `http://localhost:3000/users/${user.id}/addBasket`,
           {
-            productId: id,
+            productId: productId,
           }
         );
-        // dispatch(openModal(!isModalOpen))
-        // dispatch(addId(id))
         res.status === 200
           ? toast.success("Already in Cart, Count increased")
           : toast.success("Added To Cart");
@@ -73,19 +69,19 @@ const  UserContextProvider = ({ children }) =>{
       } catch (error) {
         toast.error(`Error: ${error.message} `);
       }
-    } else {
-      setIsLoginOpen(!isLoginOpen);
     }
   };
 
-  const handleWishlist = async (id) => {
+  const handleWishlist = async (id,productId) => {
+    // console.log("id",id)
+    // console.log("productId",productId)
     if (user) {
       try {
         setIsLoading(true);
         const res = await axios.post(
           `http://localhost:3000/users/${user.id}/addWishlist`,
           {
-            productId: id,
+            productId: productId,
           }
         );
         res.status === 200
@@ -96,11 +92,40 @@ const  UserContextProvider = ({ children }) =>{
       } catch (error) {
         toast.error(`Error: ${error.message} `);
       }
-    } else {
-      setIsLoginOpen(!isLoginOpen);
-    }   
+    }  
   };
-
+  const modifyCount = async (id, type) => {
+    try {
+      if (type) {
+        setIsLoading(true);
+        // console.log("id", id);
+        // console.log("userId", decoded.id);
+        await axios.post(
+          `http://localhost:3000/users/${decoded.id}/increaseCount`,
+          {
+            productId: id,
+          }
+        );
+        await fetchBasketData();
+      } else {
+        setIsLoading(true);
+        const res = await axios.post(
+          `http://localhost:3000/users/${decoded.id}/decreaseCount`,
+          {
+            productId: id,
+          }
+        );
+        res.status === 200
+          ? toast.error("Count must be 1 or more")
+          : toast.success("Count Increased");
+        await fetchBasketData();
+      }
+    } catch (error) {
+      toast.error(`Error ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const data = {
     decoded,
     token,
@@ -113,12 +138,11 @@ const  UserContextProvider = ({ children }) =>{
     setWishlistArr,
     isLoading,
     setIsLoading,
-    isLoginOpen,
-    setIsLoginOpen,
     fetchBasketData,
     fetchWishlistData,
     handleBasket,
     handleWishlist,
+    modifyCount,
   };
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;

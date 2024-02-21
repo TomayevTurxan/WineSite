@@ -1,16 +1,31 @@
 import "./index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Cookies from "js-cookie";
 import { Select } from "antd";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "../../helpers";
-import { useEffect} from "react";
+import { useContext, useEffect, useState } from "react";
+import { TypeContextItem } from "../../context/TypeContext";
+import { UserContext } from "../../context/UserContext";
+import toast from "react-hot-toast";
 const handleChange = (value) => {
   console.log(`selected ${value}`);
 };
 const Navbar = () => {
   const token = getCookie("token");
+  const [openDiv, setOpenDiv] = useState(false);
+  const [showBackdrop, setShowBackdrop] = useState(false);
+  const {
+    setSelectedType,
+    setSelectedCountry,
+    setSelectedGrapes,
+    setSelectedPairings,
+    setSelectedRegions,
+  } = useContext(TypeContextItem);
+  const { setIsLoading, setUser, setToken } = useContext(UserContext);
+
   // const [logged, setLogged] = useState(false);
   // const inputRef = useRef(null);
   // if (token) {
@@ -20,11 +35,42 @@ const Navbar = () => {
   //     }
   //
   // }
+
   let decodedToken = token && jwtDecode(token);
   useEffect(() => {
-    console.log("decodedToken", decodedToken);
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log("decodedToken", decodedToken);
+    }
   }, [token]);
-  token && console.log("token", token);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        event.target.closest(".search") === null &&
+        event.target.closest(".dropdown-content") === null
+      ) {
+        setOpenDiv(false);
+        setShowBackdrop(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const toggleBackdrop = () => {
+    setShowBackdrop(!showBackdrop);
+  };
+
+  //handleLogOut
+  const handleLogout = () => {
+    Cookies.remove("token");
+    setUser(null);
+    setToken(null);
+  };
+
   return (
     <main className="navigation-wine">
       <nav className="navbarHead">
@@ -42,7 +88,403 @@ const Navbar = () => {
                   </svg>
                 </div>
                 <div className="search">
-                  <input type="text" placeholder="Search any wine" />
+                  <input
+                    onClick={() => {
+                      setOpenDiv(!openDiv);
+                      toggleBackdrop();
+                    }}
+                    type="text"
+                    placeholder="Search any wine"
+                  />
+                  {openDiv && (
+                    <>
+                      <div className="dropdown-content">
+                        <div className="dropdown-content-title">
+                          <h6>Shop wines by type</h6>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setIsLoading(true);
+                              setSelectedType("Red");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                            }}
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 16.7749V23.25"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M12 16.7749C13.8034 15.5794 15.4938 14.2216 17.05 12.7183C18.1722 11.3316 18.5086 9.3383 18.0529 6.7938C17.6675 4.6462 16.7808 0.75 16.7808 0.75H7.22001C7.22001 0.75 6.33301 4.6462 5.94721 6.7938C5.49051 9.3385 5.82791 11.3306 6.95011 12.7183C8.50635 14.2215 10.1967 15.5793 12 16.7749"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.625 23.2496H16.375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M5.79578 9.05188H18.2042"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M5.79578 9.46851H18.2042"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.0625 9.88525H17.9375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.0625 10.3019H17.9375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.16675 10.7185H17.8333"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.27075 11.1353H17.7292"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.27075 11.5519H17.7292"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.58325 11.9685H17.4167"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M6.79175 12.3853H17.2083"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.10425 12.8019H16.8958"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.52075 13.2185H16.4792"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.9375 13.6353H16.0625"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.35425 14.0519H15.6458"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.86865 14.4685H15.1251"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M9.39258 14.8853H14.601"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M10.0176 15.3019H13.976"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M10.5385 15.7185H13.4551"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.1635 16.1353H12.8301"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.6843 16.5519H12.3093"
+                                stroke="#575757"
+                              ></path>
+                            </svg>
+                            <span>Red</span>
+                          </Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setIsLoading(true);
+                              setSelectedType("White");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                            }}
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 13.9653C13.4464 12.9765 14.7988 11.8566 16.04 10.62C16.9378 9.4763 17.2069 7.8327 16.8424 5.7342C16.534 3.9631 15.8246 0.75 15.8246 0.75H8.1757C8.1757 0.75 7.4664 3.9631 7.1578 5.7342C6.7924 7.8327 7.0623 9.4755 7.96 10.62C9.20124 11.8566 10.5536 12.9764 12 13.9653"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M12 13.9653V23.25"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.625 23.2496H16.375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.15759 6.95654H16.8424"
+                                stroke="#575757"
+                              ></path>
+                            </svg>
+                            <span>White</span>
+                          </Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Sparkling");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                            }}
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 16.7749C12.9552 15.4967 13.8 14.1396 14.5253 12.7183C15.1389 10.8069 15.3104 8.78112 15.0267 6.7938C14.8337 4.6462 14.39 0.75 14.39 0.75H9.60999C9.60999 0.75 9.16669 4.6462 8.97379 6.7938C8.68996 8.78112 8.86145 10.807 9.47529 12.7183C10.2003 14.1396 11.0449 15.4967 12 16.7749"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M12 16.7749V23.25"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.875 23.2496H15.125"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.97351 6.95654H15.0265"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.4745 2.2207C11.6734 2.2207 11.8642 2.14169 12.0048 2.00103C12.1455 1.86038 12.2245 1.66962 12.2245 1.4707C12.2245 1.27179 12.1455 1.08103 12.0048 0.940373C11.8642 0.799721 11.6734 0.720703 11.4745 0.720703C11.2756 0.720703 11.0848 0.799721 10.9442 0.940373C10.8035 1.08103 10.7245 1.27179 10.7245 1.4707C10.7245 1.66962 10.8035 1.86038 10.9442 2.00103C11.0848 2.14169 11.2756 2.2207 11.4745 2.2207Z"
+                                fill="#575757"
+                              ></path>
+                              <path
+                                d="M13.05 3.80005C13.1827 3.80005 13.3098 3.74737 13.4036 3.6536C13.4974 3.55983 13.55 3.43266 13.55 3.30005C13.55 3.16744 13.4974 3.04026 13.4036 2.9465C13.3098 2.85273 13.1827 2.80005 13.05 2.80005C12.9174 2.80005 12.7903 2.85273 12.6965 2.9465C12.6027 3.04026 12.55 3.16744 12.55 3.30005C12.55 3.43266 12.6027 3.55983 12.6965 3.6536C12.7903 3.74737 12.9174 3.80005 13.05 3.80005Z"
+                                fill="#575757"
+                              ></path>
+                              <path
+                                d="M13.051 9.7207C13.2499 9.7207 13.4407 9.64169 13.5814 9.50103C13.722 9.36038 13.801 9.16962 13.801 8.9707C13.801 8.77179 13.722 8.58102 13.5814 8.44037C13.4407 8.29972 13.2499 8.2207 13.051 8.2207C12.8521 8.2207 12.6613 8.29972 12.5207 8.44037C12.38 8.58102 12.301 8.77179 12.301 8.9707C12.301 9.16962 12.38 9.36038 12.5207 9.50103C12.6613 9.64169 12.8521 9.7207 13.051 9.7207Z"
+                                fill="#575757"
+                              ></path>
+                              <path
+                                d="M10.8391 5.3334C11.0692 5.3334 11.2558 5.14684 11.2558 4.9167C11.2558 4.68656 11.0692 4.5 10.8391 4.5C10.6089 4.5 10.4224 4.68656 10.4224 4.9167C10.4224 5.14684 10.6089 5.3334 10.8391 5.3334Z"
+                                fill="#575757"
+                                stroke="#575757"
+                              ></path>
+                            </svg>
+                            <span>Sparkling</span>
+                          </Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Rose");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                            }}
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 13.9653C13.4464 12.9765 14.7988 11.8566 16.04 10.62C16.9378 9.4763 17.2069 7.8327 16.8424 5.7342C16.534 3.9631 15.8246 0.75 15.8246 0.75H8.1757C8.1757 0.75 7.4664 3.9631 7.1578 5.7342C6.7924 7.8327 7.0623 9.4755 7.96 10.62C9.20124 11.8566 10.5536 12.9764 12 13.9653"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M12 13.9653V23.25"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.625 23.2496H16.375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.15759 6.95654H16.8424"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.40845 9.50002L8.61825 8.25562"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M9.15735 11.4641L12.2184 8.46411"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.0925 13.3046L14.5076 9.95764"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.14062 10.5923L10.4363 8.34229"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M10.0183 12.4889L14.0008 8.58582"
+                                stroke="#575757"
+                              ></path>
+                            </svg>
+                            <span>Rose</span>
+                          </Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Dessert");
+                            }}
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 15.2C12.0863 15.12 13.8282 13.2192 14.57 12.1749C15.3049 11.1407 16.63 8.8567 16.3319 6.9591C16.0655 5.6832 15.6625 4.43968 15.13 3.25H8.87C8.33753 4.43975 7.93461 5.68334 7.6682 6.9593C7.3691 8.8569 8.6952 11.14 9.43 12.1751C10.1716 13.2194 11.9142 15.1207 12 15.2002"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.9999 15.2002V23.25"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.87488 23.2496H15.1249"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M15.9542 9.09619H8.04614"
+                                stroke="#575757"
+                              ></path>
+                            </svg>
+                            <span>Dessert</span>
+                          </Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Fortified");
+                            }}
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 15.175C13.2641 14.3244 14.4475 13.3596 15.5354 12.2929C15.9476 11.6828 16.2237 10.9911 16.3448 10.2648C16.466 9.53853 16.4294 8.79468 16.2375 8.0838C15.9672 6.5581 14.559 0.75 14.559 0.75H9.44138C9.44138 0.75 8.03308 6.5581 7.76308 8.0838C7.57101 8.79465 7.5343 9.53853 7.65543 10.2648C7.77657 10.9912 8.05271 11.6829 8.46508 12.2929C9.55285 13.3596 10.7361 14.3243 12 15.175"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M12 15.175V23.25"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.875 23.2496H15.125"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.72925 9.05188H16.2708"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.72925 9.46851H16.2708"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.72925 9.88525H16.2708"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.72925 10.3019H16.2708"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.83325 10.7185H16.1667"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M7.9375 11.1353H16.0625"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.14575 11.5519H15.8542"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.35425 11.9685H15.6458"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.5625 12.3853H15.4375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M8.97925 12.8019H15.0208"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M9.5 13.2185H14.5"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M9.91675 13.6353H14.0833"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M10.5417 14.0519H13.4583"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.0625 14.4685H12.9375"
+                                stroke="#575757"
+                              ></path>
+                              <path
+                                d="M11.6875 14.8853H12.3125"
+                                stroke="#575757"
+                              ></path>
+                            </svg>
+                            <span>Fortified</span>
+                          </Link>
+                        </div>
+                      </div>
+                      {showBackdrop && (
+                        <div
+                          className="search-backdrop"
+                          onClick={() => {
+                            setOpenDiv(false);
+                            setShowBackdrop(false);
+                          }}
+                        ></div>
+                      )}{" "}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -115,6 +557,22 @@ const Navbar = () => {
                         src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
                         alt="User Avatar"
                       />
+                      <button
+                        style={{
+                          backgroundColor: "#ba1628",
+                          border: "none",
+                          padding: "4px 10px",
+                          color: "white",
+                          borderRadius: "5px",
+                          marginLeft: "10px",
+                        }}
+                        onClick={() => {
+                          handleLogout();
+                          toast.success("Successfully logout.")
+                        }}
+                      >
+                        Log out
+                      </button>
                     </div>
                   ) : null}
                 </li>
@@ -175,19 +633,59 @@ const Navbar = () => {
                     <div className="col-xl-4 ">
                       <ul className="navigation-wineNav-ul">
                         <h4>
-                          <Link to="/filterWine">Red</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Red");
+                              setSelectedCountry("");
+                            }}
+                          >
+                            Red
+                          </Link>
                         </h4>
                         <li>
-                          <Link>Napa Valley Cabernet Sauvignon</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Red");
+                              setSelectedCountry("Chile");
+                            }}
+                          >
+                            Chile Red
+                          </Link>
                         </li>
                         <li>
-                          <Link>Californian Pinot Noir</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Red");
+                              setSelectedCountry("Spain");
+                            }}
+                          >
+                            Spanish Red
+                          </Link>
                         </li>
                         <li>
-                          <Link>Tuscan Red</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Red");
+                              setSelectedCountry("France");
+                            }}
+                          >
+                            France Red
+                          </Link>
                         </li>
                         <li>
-                          <Link>Italian Amarone</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("Red");
+                              setSelectedCountry("Germany");
+                            }}
+                          >
+                            Germanian Red Wine
+                          </Link>
                         </li>
                         <li>
                           <Link>Argentinian Malbec</Link>
@@ -197,31 +695,111 @@ const Navbar = () => {
                     <div className="col-xl-4">
                       <ul className="navigation-wineNav-ul">
                         <h4>
-                          <Link to="/filterWine">Wine</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("White");
+                              setSelectedCountry("");
+                            }}
+                          >
+                            White
+                          </Link>
                         </h4>
                         <li>
-                          <Link>Napa Valley Cabernet Sauvignon</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("White");
+                              setSelectedCountry("Germany");
+                            }}
+                          >
+                            German Riesling
+                          </Link>
                         </li>
                         <li>
-                          <Link>Californian Pinot Noir</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("White");
+                              setSelectedCountry("France");
+                            }}
+                          >
+                            Northern France White
+                          </Link>
                         </li>
                         <li>
-                          <Link>Tuscan Red</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("White");
+                              setSelectedCountry("Chile");
+                            }}
+                          >
+                            Tuscan Chile
+                          </Link>
                         </li>
                         <li>
-                          <Link>Italian Amarone</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("White");
+                              setSelectedCountry("Australia");
+                            }}
+                          >
+                            Australia Amarone
+                          </Link>
                         </li>
                         <li>
-                          <Link>Argentinian Malbec</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedType("White");
+                              setSelectedCountry("Portugal");
+                            }}
+                          >
+                            Portugal
+                          </Link>
                         </li>
                       </ul>
                     </div>
                     <div className="col-xl-4">
                       <ul className="navigation-wineNav-ul">
-                        <h3>Sparkling</h3>
-                        <h3>Rose</h3>
-                        <h3>Fortified</h3>
-                        <h3>Dessert</h3>
+                        <Link
+                          to="/filterWine"
+                          onClick={() => {
+                            setSelectedType("Sparkling");
+                            setSelectedCountry("");
+                          }}
+                        >
+                          <h3>Sparkling</h3>
+                        </Link>
+                        <Link
+                          to="/filterWine"
+                          onClick={() => {
+                            setSelectedType("Rose");
+                            setSelectedCountry("");
+                          }}
+                        >
+                          <h3>Rose</h3>
+                        </Link>
+                        <Link
+                          to="/filterWine"
+                          onClick={() => {
+                            setSelectedType("Fortified");
+                            setSelectedCountry("");
+                          }}
+                        >
+                          <h3>Fortified</h3>
+                        </Link>
+                        <Link
+                          to="/filterWine"
+                          onClick={() => {
+                            setSelectedType("Dessert");
+                            setSelectedCountry("");
+                          }}
+                        >
+                          <h3>Dessert</h3>
+                        </Link>
                       </ul>
                     </div>
                   </div>
@@ -362,7 +940,7 @@ const Navbar = () => {
                     <div className="col-xl-6">
                       <ul className="navigation-wineNav-ul">
                         <li>
-                          <Link>
+                          <Link to="/filterWine">
                             <svg width="90" height="90" viewBox="0 0 90 90">
                               <path d="M81.159,39.185 C79.307,41.855 75.116,42.076 70.599,39.967 C70.229,42.606 68.944,45.040 67.789,47.226 C67.369,48.020 66.959,48.794 66.613,49.547 C65.031,52.991 62.988,55.272 60.631,57.815 C60.880,58.011 61.125,58.214 61.343,58.453 C62.368,59.576 62.888,61.042 62.769,62.470 C62.769,62.470 62.776,70.487 62.776,70.487 C62.776,73.598 60.424,76.036 57.381,76.181 C54.689,79.778 49.919,81.993 44.621,81.993 C39.323,81.993 34.554,79.778 31.861,76.181 C28.818,76.036 26.467,73.598 26.467,70.487 C26.467,70.487 26.467,62.321 26.467,62.321 C26.467,60.479 27.305,58.885 28.607,57.845 C26.172,55.194 24.062,52.766 22.481,49.168 C22.143,48.400 21.700,47.585 21.233,46.721 C20.449,45.279 19.599,43.710 19.075,42.036 C13.568,45.029 8.189,45.031 5.954,41.805 C3.386,38.097 6.184,31.966 12.460,27.544 C14.841,25.866 17.378,24.711 19.780,24.196 C19.525,21.963 19.699,19.617 19.926,17.220 C20.018,16.630 20.066,15.580 20.108,14.653 C20.155,13.605 20.200,12.612 20.296,11.932 C20.319,10.940 20.572,9.952 21.050,8.991 C21.795,7.485 23.411,6.707 24.968,7.097 C24.968,7.097 25.792,7.303 25.792,7.303 C25.792,7.303 26.155,8.078 26.155,8.078 C27.332,10.583 29.347,13.746 31.692,15.678 C35.624,13.397 40.068,12.198 44.621,12.198 C49.296,12.198 53.843,13.454 57.846,15.843 C60.190,13.947 62.106,10.726 63.182,8.149 C63.182,8.149 63.530,7.315 63.530,7.315 C63.530,7.315 64.401,7.097 64.401,7.097 C65.959,6.707 67.574,7.485 68.321,8.993 C68.798,9.955 69.051,10.943 69.074,11.934 C69.169,12.610 69.214,13.603 69.262,14.650 C69.303,15.577 69.350,16.630 69.427,17.094 C69.612,19.019 69.838,21.400 69.648,23.706 C71.569,24.231 73.563,25.193 75.414,26.499 C80.981,30.419 83.451,35.874 81.159,39.185 zM44.621,78.375 C47.447,78.375 50.120,77.571 52.171,76.208 C52.171,76.208 51.368,76.208 51.368,76.208 C50.464,76.208 49.703,75.529 49.589,74.625 C49.589,74.705 48.767,73.656 44.790,73.656 C41.053,73.656 40.010,74.603 39.951,74.838 C39.752,75.642 39.035,76.208 38.212,76.208 C38.212,76.208 37.071,76.208 37.071,76.208 C39.123,77.571 41.795,78.375 44.621,78.375 zM30.053,70.487 C30.053,71.706 30.930,72.590 32.140,72.590 C32.140,72.590 37.107,72.590 37.107,72.590 C38.086,71.237 40.239,70.038 44.790,70.038 C49.563,70.038 51.628,71.354 52.515,72.590 C52.515,72.590 57.103,72.590 57.103,72.590 C58.312,72.590 59.190,71.706 59.190,70.487 C59.190,70.487 59.190,62.321 59.190,62.321 C59.231,61.746 59.051,61.284 58.704,60.902 C58.313,60.473 57.777,60.218 57.272,60.218 C57.272,60.218 32.140,60.218 32.140,60.218 C30.930,60.218 30.053,61.102 30.053,62.321 C30.053,62.321 30.053,70.487 30.053,70.487 zM73.360,29.463 C71.394,28.077 69.283,27.177 67.413,26.929 C67.413,26.929 65.517,26.678 65.517,26.678 C65.517,26.678 65.888,24.784 65.888,24.784 C66.305,22.663 66.129,20.259 65.874,17.562 C65.778,17.011 65.730,15.944 65.679,14.814 C65.637,13.889 65.590,12.841 65.513,12.377 C65.513,12.377 65.490,12.081 65.490,12.081 C65.490,11.960 65.481,11.839 65.466,11.716 C64.212,14.115 61.992,17.574 58.861,19.548 C58.861,19.548 57.886,20.162 57.886,20.162 C57.886,20.162 56.926,19.526 56.926,19.526 C53.262,17.097 49.008,15.815 44.621,15.815 C40.341,15.815 36.172,17.046 32.564,19.375 C32.564,19.375 31.587,20.006 31.587,20.006 C31.587,20.006 30.615,19.365 30.615,19.365 C27.531,17.326 25.228,13.889 23.926,11.578 C23.895,11.747 23.880,11.915 23.880,12.081 C23.880,12.081 23.856,12.379 23.856,12.379 C23.779,12.842 23.732,13.892 23.690,14.819 C23.639,15.947 23.590,17.012 23.479,17.689 C23.232,20.347 23.043,23.030 23.609,25.276 C23.609,25.276 24.141,27.386 24.141,27.386 C24.141,27.386 21.986,27.526 21.986,27.526 C19.717,27.673 16.994,28.760 14.514,30.508 C9.894,33.762 7.737,38.063 8.893,39.735 C10.036,41.383 14.748,40.838 19.342,37.630 C19.342,37.630 22.073,35.723 22.073,35.723 C22.073,35.723 22.155,39.072 22.155,39.072 C22.202,40.976 23.308,43.014 24.378,44.985 C24.861,45.875 25.360,46.796 25.759,47.703 C27.225,51.037 29.256,53.240 31.827,56.029 C31.827,56.029 32.352,56.599 32.352,56.599 L56.851,56.599 C56.851,56.599 57.669,55.715 57.669,55.715 C60.056,53.144 61.942,51.113 63.360,48.027 C63.732,47.216 64.172,46.380 64.624,45.525 C65.849,43.205 67.117,40.806 67.117,38.504 C67.117,38.108 67.089,37.719 67.062,37.331 C67.062,37.331 66.805,33.383 66.805,33.383 C66.805,33.383 69.818,35.390 69.818,35.390 C73.828,38.062 77.470,38.195 78.220,37.113 C79.021,35.955 77.527,32.398 73.360,29.463 zM54.236,39.014 C51.907,39.014 50.019,37.110 50.019,34.761 C50.019,32.412 51.907,30.508 54.236,30.508 C56.565,30.508 58.453,32.412 58.453,34.761 C58.453,37.110 56.565,39.014 54.236,39.014 zM35.682,39.014 C33.353,39.014 31.465,37.110 31.465,34.761 C31.465,32.412 33.353,30.508 35.682,30.508 C38.010,30.508 39.898,32.412 39.898,34.761 C39.898,37.110 38.010,39.014 35.682,39.014 zM37.052,61.810 C38.927,61.810 40.447,63.343 40.447,65.234 C40.447,67.125 38.927,68.658 37.052,68.658 C35.177,68.658 33.658,67.125 33.658,65.234 C33.658,63.343 35.177,61.810 37.052,61.810 zM52.233,61.810 C54.107,61.810 55.627,63.343 55.627,65.234 C55.627,67.125 54.107,68.658 52.233,68.658 C50.358,68.658 48.838,67.125 48.838,65.234 C48.838,63.343 50.358,61.810 52.233,61.810 z"></path>
                             </svg>
@@ -470,57 +1048,207 @@ const Navbar = () => {
                     <div className="col-xl-4">
                       <ul className="navigation-wineNav-ul">
                         <li>
-                          <Link>Cabernet Sauvignon</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Cabernet Sauvignon");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Cabernet Sauvignon
+                          </Link>
                         </li>
                         <li>
-                          <Link>Merlot</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Merlot");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Merlot
+                          </Link>
                         </li>
                         <li>
-                          <Link>Chardonnay</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Chardonnay");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Chardonnay
+                          </Link>
                         </li>
                         <li>
-                          <Link>Pinot Noir</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Pinot Noir");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Pinot Noir
+                          </Link>
                         </li>
                         <li>
-                          <Link>Malbec</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Malbec");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Malbec
+                          </Link>
                         </li>
                       </ul>
                     </div>
                     <div className="col-xl-4">
                       <ul className="navigation-wineNav-ul">
                         <li>
-                          <Link>Sauvignon Blanc</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sauvignon Blanc");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Sauvignon Blanc
+                          </Link>
                         </li>
                         <li>
-                          <Link>Shiraz/Syrah</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Shiraz/Syrah");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Shiraz/Syrah
+                          </Link>
                         </li>
                         <li>
-                          <Link>Zinfandel</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Zinfandel");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Zinfandel
+                          </Link>
                         </li>
                         <li>
-                          <Link>Nebbiolo</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Nebbiolo");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Nebbiolo
+                          </Link>
                         </li>
                         <li>
-                          <Link>Sangioevese</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sangioevese");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Sangioevese
+                          </Link>
                         </li>
                       </ul>
                     </div>
                     <div className="col-xl-4">
                       <ul className="navigation-wineNav-ul">
                         <li>
-                          <Link>Pinot Grigio</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sangioevese");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Pinot Grigio
+                          </Link>
                         </li>
                         <li>
-                          <Link>Riesling</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sangioevese");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Riesling
+                          </Link>
                         </li>
                         <li>
-                          <Link>Chening blanc</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sangioevese");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Chening blanc
+                          </Link>
                         </li>
                         <li>
-                          <Link>Moscato</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sangioevese");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Moscato
+                          </Link>
                         </li>
                         <li>
-                          <Link>Albarino</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedGrapes("Sangioevese");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Albarino
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -575,38 +1303,148 @@ const Navbar = () => {
                           <Link to="/filterWine">Popular Regions</Link>
                         </h4>
                         <li>
-                          <Link>Rioja</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedRegions("Rioja");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Rioja
+                          </Link>
                         </li>
                         <li>
-                          <Link>Barolo</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedRegions("Barolo");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Barolo
+                          </Link>
                         </li>
                         <li>
-                          <Link>Chianti</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedRegions("Chianti");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Chianti
+                          </Link>
                         </li>
                         <li>
-                          <Link>Bordeaux</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedRegions("Bordeaux");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Bordeaux
+                          </Link>
                         </li>
                         <li>
-                          <Link>Champange</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedRegions("Champange");
+                              setSelectedGrapes("");
+                              setSelectedCountry("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Champange
+                          </Link>
                         </li>
                       </ul>
                     </div>
                     <div className="col-xl-4">
                       <ul className="navigation-wineNav-ul country">
                         <li>
-                          <Link>Italy</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedRegions("");
+                              setSelectedGrapes("");
+                              setSelectedCountry("Portugal");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Portugal
+                          </Link>
                         </li>
                         <li>
-                          <Link>Portugal</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedCountry("Germany");
+                              setSelectedRegions("");
+                              setSelectedGrapes("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Germany
+                          </Link>
                         </li>
                         <li>
-                          <Link>Chile</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedCountry("United States");
+                              setSelectedRegions("");
+                              setSelectedGrapes("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            United States
+                          </Link>
                         </li>
                         <li>
-                          <Link>New Zealand</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedCountry("Chile");
+                              setSelectedRegions("");
+                              setSelectedGrapes("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Chile
+                          </Link>
                         </li>
                         <li>
-                          <Link>Australia</Link>
+                          <Link
+                            to="/filterWine"
+                            onClick={() => {
+                              setSelectedCountry("Australia");
+                              setSelectedRegions("");
+                              setSelectedGrapes("");
+                              setSelectedPairings("");
+                              setSelectedType("");
+                            }}
+                          >
+                            Australia
+                          </Link>
                         </li>
                       </ul>
                     </div>

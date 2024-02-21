@@ -47,16 +47,18 @@ const wishlist_controller = {
       const { productId } = req.body;
       const user = await UserModel.findById(userId).populate("wishlist.product");
       if (!user) {
-        res.status(404).send("User Not Found");
-        return;
+        return res.status(404).send("User Not Found");
       }
-      user.wishlist = user.wishlist.filter((x) => x._id != productId);
+      console.log("userId",userId)
+      console.log("productId",productId)
+      user.wishlist = user.wishlist.filter((item) => item.product._id.toString() !== productId);
       await user.save();
       res.status(200).send("Product Deleted");
     } catch (error) {
       res.status(500).send(error.message);
     }
   },
+  
 };
 
 module.exports = wishlist_controller;

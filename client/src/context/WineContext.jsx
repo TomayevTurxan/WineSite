@@ -12,12 +12,18 @@ const WineContextItemProvider = ({ children }) => {
         setWines(response.data.data);
       })
   }, []);
-
+  const [selectedType, setSelectedType] = useState(
+    JSON.parse(localStorage.getItem("selectedType"))
+      ? JSON.parse(localStorage.getItem("selectedType"))
+      : []
+  );
   return (
     <WineContextItem.Provider
       value={{
         wines,
         setWines,
+        selectedType,
+        setSelectedType
       }}
     >
       {children}

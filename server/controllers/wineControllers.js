@@ -20,7 +20,7 @@ const wines_controller = {
   },
   getOne: async (req, res) => {
     const { id } = req.params;
-    const data = await WineModel.findById(id);
+    const data = await WineModel.findById(id).populate("commentsBlogs.comment");
     if (data !== undefined) {
       res.status(200).send(data);
     } else {

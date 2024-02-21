@@ -2,6 +2,7 @@ const UserModel = require("../models/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "fcghbjgfgvh";
+const nodemailer = require("nodemailer");
 const users_controller = {
   getAll: async (req, res) => {
     try {
@@ -46,7 +47,11 @@ const users_controller = {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      console.log(hashedPassword);
+      // console.log(hashedPassword);
+      const token = jwt.sign({ email: req.body.email }, "JWT_SECRET", {
+        expiresIn: "1h",
+      });
+      res.cookie("token", token, { httpOnly: true, secure: true });
       const user = new UserModel({
         firstName,
         lastName,
@@ -55,16 +60,79 @@ const users_controller = {
         gender,
         country,
         isAdmin: false,
+        isVerify: false,
         password: hashedPassword,
         confirmPassword: hashedPassword,
       });
-      await user.save();
 
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        service: "gmail",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "tu7hfn0xh@code.edu.az",
+          pass: "duxr bncf zpac czyw",
+        },
+      });
+
+      const mailData = {
+        from: "tu7hfn0xh@code.edu.az",
+        to: req.body.email,
+        subject: "Verify your Account news project",
+        text: "That was easy!",
+        html: `  <h1 style="color: #9a1221;">Vivino</h1>
+        Click here to verify your account: http://localhost:3000/users/verify/${token}
+        <div style="margin-top: 15px;"> 
+        <span>Sincerely :Vivino service</span><br>
+        <span>Contact: <span style="color: #9a1221;">vivinowine@gmail.com</span></span>
+        </div>
+        `,
+      };
+      try {
+        await transporter.sendMail(mailData);
+        console.log("Email sent successfully");
+      } catch (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).send({
+          message: "Error sending email",
+          error: error.message,
+        });
+      }
+
+      await user.save();
       res.status(201).send(user);
     } catch (error) {
       console.error("Error registering user:", error.message);
       res.status(500).send("Internal Server Error");
     }
+  },
+  verify: async (req, res) => {
+    const { token } = req.params;
+    jwt.verify(token, "JWT_SECRET", async (err, decoded) => {
+      if (err) {
+        console.error("Error verifying token:", err);
+        return res.send({
+          message: "invalid token",
+          error: err.message,
+        });
+      } else {
+        const foundPublisher = await UserModel.findOne({
+          email: decoded.email,
+        });
+        console.log(foundPublisher);
+        if (!foundPublisher) {
+          res.send({
+            message: "artist not found with this email!",
+          });
+        } else {
+          await UserModel.findByIdAndUpdate(foundPublisher._id, {
+            isVerify: true,
+          });
+          res.redirect("http://localhost:5173/login");
+        }
+      }
+    });
   },
 
   delete: async (req, res) => {
@@ -94,7 +162,9 @@ const users_controller = {
       if (!user) {
         return res.status(404).json({ message: "User not found." });
       }
-
+      if (!user.isVerify) {
+        return res.status(401).json({ message: "User doesn not Verify." });
+      }
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid password." });

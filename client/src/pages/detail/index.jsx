@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import "./index.scss";
 import { useContext, useEffect, useState } from "react";
@@ -10,19 +10,49 @@ import FactWine from "./factWine";
 import Discover from "../discover";
 import axios from "axios";
 import { DetailWineContextItem } from "../../context/DetailWineContext";
+import { UserContext } from "../../context/UserContext";
+import Comment from "./comment";
 const Detail = () => {
   const [value] = useState(4);
+  const navigate = useNavigate();
+  const [nameWishlist, setNameWishlist] = useState(true);
+  const [quantity, setQuantity] = useState(1);
   let { id } = useParams();
-  let {wine,setWine} = useContext(DetailWineContextItem);
-  console.log("id", id);
+  let { wine, setWine } = useContext(DetailWineContextItem);
+  let {
+    user,
+    token,
+    handleWishlist,
+    wishlistArr,
+    handleBasket,
+    modifyCount,
+    setIsLoading,
+  } = useContext(UserContext);
   useEffect(() => {
     const data = async () => {
+      setIsLoading(true);
       const res = await axios.get(`http://localhost:3000/wines/${id}`);
       setWine(res.data);
     };
+    const isInWishlist = wishlistArr.find((wine) => wine.product._id === id);
+    if (isInWishlist) {
+      setIsLoading(true);
+      setNameWishlist(true);
+    } else {
+      setIsLoading(false);
+      setNameWishlist(false);
+    }
     data();
-  }, []);
-  console.log("data", wine);
+  }, [id, setWine]);
+  const incrementQuantity = () => {
+    setIsLoading(true);
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const decrementQuantity = () => {
+    setIsLoading(false);
+    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
   return (
     <>
       <section className="detail">
@@ -31,13 +61,13 @@ const Detail = () => {
             <div className="col-xl-8">
               <div className="detail-blog">
                 <div className="col-xl-3">
-                  <img
-                    src={wine.img}
-                  />
+                  <img src={wine.img} />
                 </div>
                 <div className="col-xl-9">
                   <div className="detail-blog-info">
-                    <span className="detail-blog-info-winery">{wine.winery}</span>
+                    <span className="detail-blog-info-winery">
+                      {wine.winery}
+                    </span>
                     <h2>
                       {wine.grapes} <span>2022</span>
                     </h2>
@@ -85,7 +115,16 @@ const Detail = () => {
                       </div>
                     </div>
                     <div className="detail-blog-wishlist">
-                      <Link>
+                      <Link
+                        onClick={() => {
+                          if (token) {
+                            handleWishlist(user.id, id);
+                            navigate("/wishlist");
+                          } else {
+                            navigate("/login");
+                          }
+                        }}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"
@@ -99,7 +138,9 @@ const Detail = () => {
                           ></path>
                           <span>Add to Wishlist</span>
                         </svg>{" "}
-                        Add to wishlist
+                        {nameWishlist
+                          ? "Remove from wishlist"
+                          : "Add to wishlist"}
                       </Link>
                     </div>
                     <div className="detail-blog-info-reklam">
@@ -134,16 +175,55 @@ const Detail = () => {
             <div className="col-xl-4">
               <div className="detail-basket">
                 <div className="detail-basket-price">
-                  <span>${wine.price}</span>
+                  <span>${wine.price * quantity}</span>
                   <p>Price is per bottle</p>
                 </div>
                 <div className="detail-basket-calculate">
-                  <div className="detail-basket-calculate-minus">-</div>
-                  <div className="detail-basket-calculate-price">1</div>
-                  <div className="detail-basket-calculate-plus">+</div>
+                  <div
+                    className="detail-basket-calculate-minus"
+                    onClick={() => {
+                      if (token) {
+                        setIsLoading(true);
+                        modifyCount(wine._id, false);
+                        decrementQuantity();
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
+                  >
+                    -
+                  </div>
+                  <div className="detail-basket-calculate-price">
+                    {quantity}
+                  </div>
+                  <div
+                    className="detail-basket-calculate-plus"
+                    onClick={() => {
+                      if (token) {
+                        setIsLoading(true);
+                        modifyCount(wine._id, true);
+                        incrementQuantity();
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
+                  >
+                    +
+                  </div>
                 </div>
                 <div className="detail-basket-button">
-                  <button className="add-card">Add to cart</button>
+                  <Link
+                    onClick={() => {
+                      if (token) {
+                        handleBasket(user.id, wine._id, quantity);
+                        navigate("/basket");
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
+                  >
+                    <button className="add-card">Add to cart</button>
+                  </Link>
                 </div>
                 <div className="detail-basket-info">
                   <p>
@@ -262,6 +342,7 @@ const Detail = () => {
       <Highlights />
       <FactWine />
       <Discover />
+      <Comment/>
     </>
   );
 };

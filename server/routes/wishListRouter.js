@@ -4,6 +4,6 @@ const wishlist_controller = require("../controllers/wishlistController");
 
 wishlist_router.get("/users/:userId/wishlist", wishlist_controller.getWishListData);
 wishlist_router.post("/users/:userId/addWishlist", wishlist_controller.addToWishlist);
-wishlist_router.delete("/users/:userId/delete", wishlist_controller.deleteDataFromWishlist);
+wishlist_router.delete("/users/:userId/deleteWishlist", wishlist_controller.deleteDataFromWishlist);
 
 module.exports = wishlist_router;

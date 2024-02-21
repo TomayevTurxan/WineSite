@@ -5,13 +5,16 @@ import Basket from "../pages/basket";
 import Detail from "../pages/detail";
 import FilterWine from "../pages/filterWine";
 import Home from "../pages/home";
+import PaymentForm from "../pages/payment";
+import Wishlist from "../pages/wishList";
+
 export const ROUTES = [
   {
     path: "/",
     element: <UserRoot />,
     children: [
       {
-        path: "",
+        path: "/",
         element: <Home />,
       },
       {
@@ -33,6 +36,14 @@ export const ROUTES = [
       {
         path: "/register",
         element: <Register/>,
+      },
+      {
+        path: "/payment",
+        element: <PaymentForm/>,
+      },
+      {
+        path: "/wishlist",
+        element: <Wishlist/>,
       },
     ],
   },

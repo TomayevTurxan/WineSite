@@ -1,0 +1,115 @@
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wishlist {
+  background-color: #f7f3f0;
+  margin: 0;
+  padding: 50px 50px;
+  .wishlist-th-name {
+    width: 40%;
+  }
+  .wishlist-th-quantity {
+    width: 28%;
+  }
+  .wishlist-th-price {
+    width: 15%;
+  }
+  .wishlist-table {
+    margin: 0 auto;
+    box-shadow: 0 0 7px 0 rgba(50, 50, 50, 0.15);
+    display: block;
+    background: #fff;
+    border-radius: 4px;
+    padding: 0 32px;
+    .wishlist-table-img {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      img {
+        width: 5%;
+        margin-right: 20px;
+      }
+      .wishlist-table-productName {
+        p {
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 400;
+          color: #333;
+          text-decoration: none;
+          text-align: left;
+        }
+        .wishlist-table-productDiscount {
+          color: #02a78b;
+          padding-top: 8px;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 400;
+          width: 100%;
+        }
+      }
+    }
+    .wishlist-table-price {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0;
+      span {
+        margin-right: 20px;
+        font-size: 16px;
+      }
+      .wishlist-table-price-discount {
+        text-decoration: line-through;
+      }
+    }
+  }
+}
+
+.addwishlist {
+  justify-content: center;
+  color: #1e1e1e;
+  display: inline-flex;
+  padding: 7px 16px 9px;
+  position: relative;
+  font-size: 1rem;
+  min-width: 40px;
+  min-height: 40px;
+  transition: transform 0.1s ease;
+  font-weight: 500;
+  border-color: white;
+  color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 80px;
+  text-transform: none;
+  background-color: #00845f;
+}
+
+.wishlist {
+  .wishlist-card {
+    display: flex;
+    img {
+      box-shadow: 0 0 7px 0 rgba(50, 50, 50, 0.15);
+      display: flex;
+      margin-right: 8px;
+      background-size: contain;
+      border: 6px solid #fff;
+      height: 45px;
+      width: 45px;
+      transition: all 0.5s ease;
+      border-radius: 20%;
+      margin-right: 20px;
+    }
+    .wishlist-card-title {
+      span {
+        margin-right: 8px;
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: 400;
+        color: #989999;
+      }
+      P {
+      }
+    }
+  }
+}

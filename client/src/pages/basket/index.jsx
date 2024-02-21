@@ -11,7 +11,10 @@ import "./index.scss";
 import { Link } from "react-router-dom";
 import Discover from "../discover";
 import { UserContext } from "../../context/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import Loader from "../loading";
 // import { UserContext } from "../../context/UserContext";
 // import { useContext } from "react";
 const Basket = () => {
@@ -19,11 +22,49 @@ const Basket = () => {
   // const token = getCookie("token");
   // const decode = jwtDecode(token);
   // console.log("decode", decode);
-  const { basketArr, fetchBasketData } = useContext(UserContext);
-  console.log("basketArr", basketArr);
+  const { basketArr, fetchBasketData, decoded, isLoading, setIsLoading,modifyCount } =
+    useContext(UserContext);
+  const [subtotal, setSubtotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [total, setTotal] = useState(0);
+  console.log("basketArr",basketArr)
+  // console.log("basketArr", basketArr);
   useEffect(() => {
     fetchBasketData();
   }, []);
+  useEffect(() => {
+    if (basketArr) {
+      // Calculate subtotal and discount
+      const newSubtotal = basketArr.reduce(
+        (acc, item) => acc + item.count * item.product.price,
+        0
+      );
+      const newDiscount = basketArr.reduce(
+        (acc, item) => acc + (item.product.price * item.product.discount) / 100,
+        0
+      );
+
+      setSubtotal(newSubtotal);
+      setDiscount(newDiscount);
+      setTotal(newSubtotal - newDiscount);
+    }
+  }, [basketArr]);
+  
+  async function handleDelete(id) {
+    try {
+        setIsLoading(true)
+        await axios.delete(`http://localhost:3000/users/${decoded.id}/deleteBasket`, {
+            data: {
+                productId: id
+            }
+        })
+        setIsLoading(false)
+        await fetchBasketData()
+        toast.success("Product has been deleted")
+    } catch (error) {
+        toast.error(`${error.message}`)
+    }
+}
   return (
     <>
       <section className="basket">
@@ -45,11 +86,11 @@ const Basket = () => {
                 </TableHead>
                 <TableBody>
                   {basketArr &&
-                    basketArr.map((item) => {
+                    basketArr.map((item,idx) => {
                       return (
                         <>
                           <TableRow
-                            key={item.product._id}
+                            key={idx}
                             sx={{
                               "&:last-child td, &:last-child th": { border: 0 },
                             }}
@@ -71,17 +112,28 @@ const Basket = () => {
                             <TableCell align="left">
                               <div className="basket-table-quantity">
                                 <div className="detail-basket-calculate">
-                                  <div className="detail-basket-calculate-minus">
+                                  <div
+                                    onClick={() =>
+                                      modifyCount(item.product._id, false)
+                                    }
+                                    className="detail-basket-calculate-minus"
+                                  >
                                     -
                                   </div>
                                   <div className="detail-basket-calculate-price">
                                     {item.count}
                                   </div>
-                                  <div className="detail-basket-calculate-plus">
+                                  <div
+                                    onClick={() =>
+                                      modifyCount(item.product._id, true)
+                                    }
+                                    className="detail-basket-calculate-plus"
+                                  >
                                     +
                                   </div>
                                 </div>
                                 <svg
+                                 onClick={() => handleDelete(item.product._id)}
                                   className="basket-table-delete"
                                   viewBox="0 0 16 16"
                                 >
@@ -109,7 +161,9 @@ const Basket = () => {
                                 </span>
                               </p>
                             </TableCell>
-                            <TableCell align="right">${item.count*item.product.price}</TableCell>
+                            <TableCell align="right">
+                              ${item.count * item.product.price}
+                            </TableCell>
                           </TableRow>
                         </>
                       );
@@ -131,27 +185,24 @@ const Basket = () => {
             <div className="col-xl-4">
               <div className="basket-card-information">
                 <span className="basket-card-information-">Subtotal</span>
-                <span>$461.88</span>
+                <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="basket-card-information">
-                <span className="basket-card-information-">Tax(Estimated)</span>
-                <span>$27.72</span>
-              </div>
-              <div className="basket-card-information">
-                <span className="basket-card-information-">Shipping</span>
-                <span>$20</span>
+                <span className="basket-card-information-">Discount</span>
+                <span>${discount.toFixed(2)}</span>
               </div>
               <div className="basket-card-information">
                 <span className="basket-card-information-">Total</span>
-                <span>$509.40</span>
+                <span>${total.toFixed(2)}</span>
               </div>
-              <Link className="basket-card-price">
+              <Link to="/payment" className="basket-card-price">
                 <button>Checkout</button>
               </Link>
             </div>
           </div>
         </div>
       </section>
+      {isLoading && <Loader />}
       <Discover />
     </>
   );

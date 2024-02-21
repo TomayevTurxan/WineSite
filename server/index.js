@@ -6,6 +6,7 @@ const cors = require("cors");
 const wines_router = require("./routes/wines.router");
 const basket_router = require("./routes/basketRouter");
 const wishlist_router = require("./routes/wishListRouter");
+const comments_router = require("./routes/commentRouter");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -13,6 +14,7 @@ app.use("/", users_router);
 app.use("/", wines_router);
 app.use("/",  basket_router);
 app.use("/",  wishlist_router);
+app.use("/",  comments_router);
 
 mongoose
   .connect(

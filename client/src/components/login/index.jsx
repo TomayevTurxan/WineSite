@@ -2,7 +2,7 @@ import "./style.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast, { Toaster } from "react-hot-toast";
@@ -16,7 +16,6 @@ function Login() {
     fetchBasketData();
   }, []);
   console.log("user", user);
-  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -35,7 +34,7 @@ function Login() {
         const res = await axios.post("http://localhost:3000/users/login", values);
         toast.success("Successfully Logined!");
         res.status === 201 && setToken(res.data.token);
-        res.status === 201 && setCookie("token", res.data.token, "600h");
+        res.status === 201 && setCookie("token", res.data.token, "60h");
         const decoded = res.status === 201 && jwtDecode(res.data.token);
         setUser(decoded);
         await fetchBasketData();
@@ -109,7 +108,6 @@ function Login() {
           </div>
         </div>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
     </form>
   );
 }

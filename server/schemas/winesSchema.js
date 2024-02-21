@@ -15,6 +15,15 @@ const wineSchema = new mongoose.Schema(
     alchocolDegree: { type: Number },
     releaseTime: { type: Number },
     allergies: [{ type: String }],
+    countryImg: [{ type: String }],
+    commentsBlogs: [
+      {
+        comment: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "comments",
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
