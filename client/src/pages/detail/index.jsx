@@ -342,7 +342,7 @@ const Detail = () => {
       <Highlights />
       <FactWine />
       <Discover />
-      <Comment/>
+      <Comment id={id} wine={wine}/>
     </>
   );
 };

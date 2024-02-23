@@ -115,9 +115,7 @@ const  UserContextProvider = ({ children }) =>{
             productId: id,
           }
         );
-        res.status === 200
-          ? toast.error("Count must be 1 or more")
-          : toast.success("Count Increased");
+       console.log(res)
         await fetchBasketData();
       }
     } catch (error) {

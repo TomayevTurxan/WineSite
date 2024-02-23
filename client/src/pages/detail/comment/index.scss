@@ -77,11 +77,21 @@
       }
       .comment-blog-person-likeComment {
         display: flex;
+        align-items:center;
         .comment-blog-person-like {
           @include likeComment;
         }
         .comment-blog-person-comment {
           @include likeComment;
+        }
+        .all-comments{
+          .all-comments-form{
+            margin-left: 10px;
+            span{
+              color:#8e041a;
+              text-decoration: underline;
+            }
+          }
         }
       }
     }

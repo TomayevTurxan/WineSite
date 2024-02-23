@@ -178,6 +178,7 @@ const users_controller = {
           firstName: user.firstName,
           lastName: user.lastName,
           country: user.country,
+          isVerify: user.isVerify,
         },
         JWT_SECRET,
         { expiresIn: "1h" }
