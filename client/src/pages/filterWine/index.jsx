@@ -154,9 +154,9 @@ const FilterWine = () => {
             </FormControl>
           </div>
         </div>
-        <div className="row mt-5 ">
-          <div className="col-xl-12 d-flex">
-            <div className="col-xl-4">
+        <div className="row mt-5">
+          <div className="col-xl-12 d-flex filterRes">
+            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
               <div className="filterWine-wineTypes-head">
                 <div className="filterWine-wineTypes-title">
                   <h2>Wine Types</h2>
@@ -712,7 +712,7 @@ const FilterWine = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-8 mb-5 pl-3">
+            <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12  pl-3">
               {filteredWines.map((wine, idx) => (
                 <Link to={`/detail/${wine._id}`} key={idx}>
                   <div className="filterWine-card">
@@ -730,7 +730,7 @@ const FilterWine = () => {
                       </div>
                       <div className="filterWine-card-price">
                         <div className="filterWine-card-rating">
-                          <h1>4.4</h1>
+                          <h1>{wine.rating}</h1>
                           <Rating
                             name="read-only"
                             value={value}
@@ -739,7 +739,7 @@ const FilterWine = () => {
                               color: "#891826",
                             }}
                           />
-                          <span>56 ratings</span>
+                          {/* <span>56 ratings</span> */}
                           <Link
                             onClick={() => handleBasket(decode.id, wine._id)}
                             to="/basket"

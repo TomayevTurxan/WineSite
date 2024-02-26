@@ -1,0 +1,38 @@
+.adminMain {
+  .admin-head {
+    display: flex;
+    .dashboard {
+      padding: 30px 30px;
+      background-color: red;
+      width: 20%;
+      height: 1000vh;
+      .img {
+        margin-bottom: 20px;
+        svg {
+          width: 100px;
+        }
+      }
+      .links {
+        ul {
+          li {
+            margin-bottom: 15px;
+            a {
+              display: flex;
+              align-items: center;
+              span {
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .statistic {
+      width: 80%;
+      padding: 30px 30px;
+      .pie-chart{
+        width: 30%;
+      }
+    }
+  }
+}

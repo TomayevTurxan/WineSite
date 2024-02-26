@@ -6,20 +6,24 @@ import CommentsSection from "./commentModal";
 import { UserContext } from "../../../context/UserContext";
 import toast from "react-hot-toast";
 import { FaTrashAlt } from "react-icons/fa";
-const Comment = ({ id }) => {
+import Loader from "../../loading";
+import { AiFillLike } from "react-icons/ai";
+import { AiOutlineLike } from "react-icons/ai";
+const Comment = ({ id, wine }) => {
   console.log("id", id);
+  console.log("wine", wine);
   const [showReply, setShowReply] = useState(false);
   const [commentsOfWine, setCommentsOfWine] = useState([]);
   const [selectedCommentId, setSelectedCommentId] = useState([]);
-  const { setIsLoading, token, user } = useContext(UserContext);
+  const { isLoading, setIsLoading, token, user } = useContext(UserContext);
   const [replyText, setReplyText] = useState("");
+  const [commentText, setCommentText] = useState("");
   //forModal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const isLoggedIn = user !== null;
-
 
   console.log("commentsOfWine", commentsOfWine);
 
@@ -33,9 +37,6 @@ const Comment = ({ id }) => {
 
   //likeComment
   const likeComment = async (likeId) => {
-    console.log("id", id);
-    console.log("user", user);
-    console.log("likeId", likeId);
     try {
       setIsLoading(true);
       const res = await axios.post(
@@ -60,10 +61,37 @@ const Comment = ({ id }) => {
   };
   //likeRepy
 
+  //postComment
+  const postComment = async () => {
+    console.log("id",id)
+    if (commentText.trim().length === 0) {
+      toast.error("Please enter a comment!");
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await axios.post(
+        `http://localhost:3000/wines/${id}/addComment`,
+        {
+          text: commentText,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setIsLoading(false);
+      setCommentText("");
+      toast.success("Commnet Added Successfully");
+      await allComments();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   //postReply
   const postReply = async (commentId) => {
-    console.log("commentId", commentId);
-    console.log("replyText", replyText);
     if (replyText.trim().length === 0) {
       toast.error("Please enter a reply!");
       return;
@@ -81,8 +109,8 @@ const Comment = ({ id }) => {
           },
         }
       );
-      setReplyText("");
       setIsLoading(false);
+      setReplyText("");
       toast.success("Reply Added Successfully");
       await allComments();
     } catch (error) {
@@ -91,14 +119,36 @@ const Comment = ({ id }) => {
   };
 
   //deleteComment
-  const deleteComment = async (id) => {
-    console.log("deletedId", id);
+  const deleteComment = async (commentId) => {
+    if (token) {
+      try {
+        setIsLoading(true);
+        await axios.delete(
+          `http://localhost:3000/comments/${commentId}/delete`,
+          {
+            headers: {
+              Authorization: token,
+            },
+            data: {
+              wineId: id,
+            },
+          }
+        );
+        setIsLoading(false);
+        toast.success("Comment Deleted Successfully");
+        await allComments();
+      } catch (error) {
+        toast.error(error.message);
+      }
+    } else {
+      toast.error("You must be logged in firstly to perform this action");
+    }
   };
 
+  //allComments
   const allComments = async () => {
     const res = await axios.get(`http://localhost:3000/wines/${id}/comments`);
     setCommentsOfWine(res.data);
-    console.log("res", res.data);
   };
   useEffect(() => {
     allComments();
@@ -113,6 +163,31 @@ const Comment = ({ id }) => {
               <span>Comments</span>
             </div>
             <div className="comment-blog">
+              <div className="comment-blog-person-reply-textArea">
+                <textarea
+                  style={{
+                    position: "relative",
+                  }}
+                  placeholder="Leave a comment"
+                  maxLength="512"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                ></textarea>
+                <button
+                  style={{
+                    width: "100px",
+                    position: "absolute",
+                    border: "none",
+                    padding: "5px 10px",
+                    backgroundColor: "#ba1628",
+                    color: "white",
+                    borderRadius: "10px",
+                  }}
+                  onClick={() => postComment()}
+                >
+                  send
+                </button>
+              </div>
               {commentsOfWine &&
                 commentsOfWine.map((item) => {
                   return (
@@ -135,21 +210,18 @@ const Comment = ({ id }) => {
                         </div>
                         <div className="comment-blog-person-likeComment">
                           <div
-                            onClick={() => likeComment(item._id)}
+                            onClick={() => likeComment(item.comment._id)}
                             className="comment-blog-person-like"
                           >
-                            <svg width="20px" height="20px" viewBox="0 0 20 20">
-                              <path
-                                fill="none"
-                                stroke="#1e1e1e"
-                                d="M2,15.6h2.2c0.3,0,0.5-0.2,0.5-0.5V7.5C4.7,7.2,4.4,7,4.2,7H2"
-                              ></path>
-                              <path
-                                fill="none"
-                                stroke="#1e1e1e"
-                                d="M6.1,6.8l3.7-5.3c0,0,0.9-1.2,2.1-0.4s0.8,1.9,0.8,1.9L11.1,6c0,0-0.2,0.4,0.1,0.6c0.3,0.2,0.7,0.3,0.7,0.3 h4.7c0,0,1.5,0.1,1.5,1.4s-1.3,1.6-1.3,1.6s1.3,0.1,1.3,1.4s-2.1,1.5-2.1,1.5s1.2,0.1,1.2,1.4s-1.5,1.5-1.5,1.5H9.3 c0,0-3.1-0.5-3.2-2.6"
-                              ></path>
-                            </svg>
+                            {item.comment.likes && user &&
+                            item.comment.likes.find(
+                              (like) => like.from.id === user.id
+                            ) ? (
+                              <AiFillLike className="icon"/>
+                            ) : (
+                              <AiOutlineLike className="icon" />
+                            )}
+
                             <span>{item.comment.likes.length}</span>
                           </div>
                           <div
@@ -173,7 +245,7 @@ const Comment = ({ id }) => {
                           </div>
                           {isLoggedIn && user.id === item.comment.from.id && (
                             <div
-                              onClick={() => deleteComment(item._id)}
+                              onClick={() => deleteComment(item.comment._id)}
                               className="comment-blog-person-comment"
                             >
                               <FaTrashAlt />
@@ -204,7 +276,7 @@ const Comment = ({ id }) => {
                               style={{
                                 position: "relative",
                               }}
-                              placeholder="Leave a comment"
+                              placeholder="Leave a reply"
                               maxLength="512"
                               value={replyText}
                               onChange={(e) => setReplyText(e.target.value)}
@@ -243,6 +315,7 @@ const Comment = ({ id }) => {
                           <CommentsSection
                             commentId={selectedCommentId}
                             allComments={allComments}
+                            isLoggedIn={isLoggedIn}
                           />
                         </div>
                       </Modal>
@@ -253,6 +326,7 @@ const Comment = ({ id }) => {
           </div>
         </div>
       </div>
+      {isLoading && <Loader />}
     </section>
   );
 };

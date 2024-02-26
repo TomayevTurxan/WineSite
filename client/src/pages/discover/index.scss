@@ -1,18 +1,50 @@
-.discover{
-    background-color:#f7f3f0;
-    padding: 50px 0px;
-    .discover-box{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        svg{
-            width: 30%;
-            height: 100%;
-            margin-right: 15px;
-        }
-        p{
-            margin: 0;
-            padding: 0;
-        }
+.discover {
+  background-color: #f7f3f0;
+  padding: 50px 0px;
+  .discover-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      width: 30%;
+      height: 100%;
+      margin-right: 15px;
     }
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .discover {
+    h1 {
+      font-size: 15px;
+    }
+    .trustWine {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .discover {
+    h1 {
+      font-size: 15px;
+    }
+    .trustWine {
+      display: flex;
+      flex-direction: column;
+    }
+    svg {
+      width: 20% ;
+    }
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .discover {
+  }
 }

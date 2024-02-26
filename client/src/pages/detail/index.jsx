@@ -32,6 +32,7 @@ const Detail = () => {
     const data = async () => {
       setIsLoading(true);
       const res = await axios.get(`http://localhost:3000/wines/${id}`);
+      setIsLoading(false);
       setWine(res.data);
     };
     const isInWishlist = wishlistArr.find((wine) => wine.product._id === id);
@@ -58,12 +59,12 @@ const Detail = () => {
       <section className="detail">
         <div className="container">
           <div className="row">
-            <div className="col-xl-8">
+            <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
               <div className="detail-blog">
-                <div className="col-xl-3">
+                <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                   <img src={wine.img} />
                 </div>
-                <div className="col-xl-9">
+                <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                   <div className="detail-blog-info">
                     <span className="detail-blog-info-winery">
                       {wine.winery}
@@ -172,7 +173,7 @@ const Detail = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-4">
+            <div className="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
               <div className="detail-basket">
                 <div className="detail-basket-price">
                   <span>${wine.price * quantity}</span>

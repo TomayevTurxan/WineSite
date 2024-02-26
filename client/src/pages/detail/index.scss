@@ -196,3 +196,52 @@
     }
   }
 }
+
+@media screen and (max-width: 480px) {
+  .detail {
+    background-color: #f7f3f0;
+    padding: 50px 0px;
+    .detail-basket {
+      width: 100%!important;
+    }
+    .detail-blog {
+      display: flex;
+      flex-direction: column!important;
+      align-items: center;
+    }
+    .detail-blog {
+      display: flex;
+      .detail-blog-info {
+        .detail-blog-list {
+          padding-bottom: 48px;
+          ul {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .detail {
+    background-color: #f7f3f0;
+    padding: 50px 0px;
+    .detail-blog {
+      display: flex;
+      flex-direction: column!important;
+    }
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .detail {
+    .detail-basket {
+      width: 60%;
+      margin: 0 auto;
+      margin-top: 30px !important;
+    }
+  }
+}

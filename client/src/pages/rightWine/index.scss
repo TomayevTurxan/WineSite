@@ -1,6 +1,7 @@
 .rightWine {
   margin: 0;
-  background-repeat: round;
+  background-repeat: no-repeat;
+  background-size: cover;
   background-image: url("https://www.vivino.com/packs/5997fbcc6f26c5936af550a0f5c826ba.jpg");
   height: 300px;
   display: flex;
@@ -14,6 +15,19 @@
         font-size: 56px;
         line-height: 64px;
         font-weight: 400;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .rightWine {
+    .rightWine-head {
+      .rightWine-title {
+        h1 {
+          font-size: 45px;
+        }
       }
     }
   }

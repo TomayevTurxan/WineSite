@@ -234,3 +234,45 @@
   background-color: #ba1628 !important;
   color: white !important;
 }
+
+@media screen and (max-width: 480px) {
+  .filterWine{
+    h2{
+      padding: 0px 10px;
+    }
+  }
+  .filterRes{
+    flex-direction: column!important;
+  }
+  .filterWine-card{
+    margin-top: 100px;
+    .filterWine-card-contains{
+      .filterWine-card-img{
+        img{
+          height: 200px!important;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 762px) {
+  .filterWine{
+    h2{
+      padding: 0px 10px;
+    }
+  }
+  .filterRes{
+    flex-direction: column!important;
+  }
+  .filterWine-card{
+    margin-top: 100px;
+    .filterWine-card-contains{
+      .filterWine-card-img{
+        img{
+          height: 200px!important;
+        }
+      }
+    }
+  }
+}

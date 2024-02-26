@@ -6,7 +6,6 @@ import DetailWineContextItemProvider from "./context/DetailWineContext";
 import UserContextProvider, { UserContext } from "./context/UserContext";
 import TypeContextItemProvider from "./context/TypeContext";
 import { Toaster } from "react-hot-toast";
-import Loader from "./pages/loading";
 
 function App() {
   const routes = createBrowserRouter(ROUTES);

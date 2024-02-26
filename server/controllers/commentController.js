@@ -15,7 +15,7 @@ const comments_controller = {
   getAllCommentsWine: async (req, res) => {
     try {
       const { wineId } = req.params;
-      console.log("wineId",wineId)
+      console.log("wineId", wineId);
       const wine = await WineModel.findById(wineId).populate(
         "commentsBlogs.comment"
       );
@@ -65,11 +65,10 @@ const comments_controller = {
           res.status(404).send("wine Not Found");
           return;
         }
-        console.log("wienCommentBlog", wine.commentsBlogs);
-        wine.commentsBlogs.find((x) => console.log(x.comment._id.toString()));
-        wine.commentsBlogs.filter(
-          (x) => x.comment._id.toString() !== commentId.toString()
+        wine.commentsBlogs = wine.commentsBlogs.filter(
+          (x) => x.comment._id.toString() !== commentId
         );
+
         await CommentModel.findByIdAndDelete(commentId);
         await wine.save();
         res.status(200).send("Comment Deleted");
@@ -108,10 +107,13 @@ const comments_controller = {
       const token = req.headers.authorization;
       const decoded = jwt.verify(token, JWT_SECRET);
       const comment = await CommentModel.findById(commentId);
-      const findedLike = comment.likes.find((x) => x.from._id === userId);
+      const findedLike = comment.likes.find((x) => x.from.id === userId);
+      console.log("findedLike",findedLike)
+      console.log("comment",comment)
+      console.log("userId",userId)
       if (findedLike) {
         comment.likes = comment.likes.filter(
-          (item) => item.from._id !== userId
+          (item) => item.from.id !== userId
         );
         await comment.save();
         res.status(201).send("Like removed successfully!");
@@ -191,9 +193,9 @@ const comments_controller = {
       const decoded = jwt.verify(token, JWT_SECRET);
       const comment = await CommentModel.findById(commentId);
       const reply = comment.replies.find((x) => x._id.toString() === replyId);
-      const findedLike = reply.likes.find((x) => x.from._id === userId);
+      const findedLike = reply.likes.find((x) => x.from.id === userId);
       if (findedLike) {
-        reply.likes = reply.likes.filter((item) => item.from._id !== userId);
+        reply.likes = reply.likes.filter((item) => item.from.id !== userId);
         await comment.save();
         res.status(201).send("Like removed to reply successfully!");
       } else {

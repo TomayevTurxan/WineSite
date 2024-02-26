@@ -7,8 +7,8 @@ const Discover = () => {
           <h2>
             Trusted by millions to discover and buy the right wine every time.
           </h2>
-          <div className="col-xl-12 d-flex mt-5">
-            <div className="col-xl-3 discover-box">
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex mt-5 trustWine">
+            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 discover-box">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"
@@ -103,7 +103,7 @@ const Discover = () => {
               </svg>
               <p>Shop the world’s largest wine marketplace</p>
             </div>
-            <div className="col-xl-3 discover-box">
+            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 discover-box">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"
@@ -198,7 +198,7 @@ const Discover = () => {
               </svg>
               <p>Shop the world’s largest wine marketplace</p>
             </div>
-            <div className="col-xl-3 discover-box">
+            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 discover-box">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"
@@ -293,7 +293,7 @@ const Discover = () => {
               </svg>
               <p>Shop the world’s largest wine marketplace</p>
             </div>
-            <div className="col-xl-3 discover-box">
+            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 discover-box">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"

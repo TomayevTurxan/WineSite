@@ -1,0 +1,92 @@
+.hamburger-menu {
+  .icon {
+    font-size: 23px;
+    margin-right: 15px;
+  }
+  .hamburger-menu-head {
+    z-index: 999;
+    ul {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #eae0da;
+      padding: 15px 30px;
+      width: 100%;
+      height: 100%;
+    }
+    li {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      position: relative;
+      svg {
+        margin-right: 10px;
+      }
+      .wine {
+        display: flex;
+        height: 30px;
+      }
+      i {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+      span {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 400;
+      }
+    }
+    .accordionMenu {
+      z-index: 999999;
+      position: absolute;
+      background-color: white;
+      top: 45px;
+      ul {
+        h5 {
+          a {
+            font-weight: 600;
+          }
+        }
+        svg {
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
+        }
+        .links {
+          padding: 10px 10px;
+          li {
+            margin-bottom: 15px;
+            a {
+              color: #1d1d1d;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.hamburger-menu {
+  position: relative;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.hamburger-menu-head {
+  width: 300px;
+  height: 700px;
+  background-color: white;
+  position: absolute;
+  top: -820px;
+  left: -38px;
+  transition: top 0.3s ease;
+}
+
+.hamburger-menu-head.open {
+  top: 45px;
+}
+

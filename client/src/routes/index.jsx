@@ -1,12 +1,15 @@
 import UserRoot from "../UserRoot";
 import Login from "../components/login";
 import Register from "../components/register";
+import AdminLoginForm from "../admin/components/login";
 import Basket from "../pages/basket";
 import Detail from "../pages/detail";
 import FilterWine from "../pages/filterWine";
 import Home from "../pages/home";
 import PaymentForm from "../pages/payment";
 import Wishlist from "../pages/wishList";
+import AdminHome from "../admin/pages/home";
+import AdminRoot from "../admin/AdminRoot";
 
 export const ROUTES = [
   {
@@ -47,4 +50,18 @@ export const ROUTES = [
       },
     ],
   },
+  {
+    path: "/admin",
+    element: <AdminRoot/>,
+    children: [
+      {
+        path: "/admin",
+        element: <AdminLoginForm/>,
+      },
+      {
+        path: "/admin/home",
+        element: <AdminHome/>,
+      },
+    ]
+  }
 ];

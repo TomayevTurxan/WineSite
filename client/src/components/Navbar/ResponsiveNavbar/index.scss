@@ -1,0 +1,27 @@
+@media screen and (min-width: 480px) {
+  .resNav {
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .resNav {
+    display: block!important;
+  }
+}
+.resNav {
+  margin: 20px !important;
+  .vivinoNavbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    .logo {
+      svg {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.acordion{
+  margin-top: 15px;
+}

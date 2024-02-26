@@ -16,9 +16,9 @@
   .smartWay-title {
     display: flex;
     justify-content: space-between;
+    padding: 30px;
     .smartWay-title-sendEmail {
       padding-left: 30px;
-
       p {
         max-width: 500px;
         font-size: 40px;
@@ -55,6 +55,106 @@
             color: black;
           }
         }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .smartWay {
+    .smartWay-title {
+      flex-direction: column;
+      align-items: center;
+      padding: 0 !important;
+      margin-top: 20px;
+      .smartWay-title-sendEmail {
+        padding-left: 30px;
+        p {
+          font-size: 25px;
+        }
+        span {
+          font-size: 17px;
+        }
+      }
+      .comment-blog-person-reply-textArea {
+        display: flex !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .smartWay {
+    .smartWay-title {
+      flex-direction: column;
+      align-items: center;
+      padding: 0 !important;
+      margin-top: 20px;
+      .smartWay-title-sendEmail {
+        padding-left: 30px;
+        p {
+          font-size: 25px;
+        }
+        span {
+          font-size: 17px;
+        }
+      }
+      .comment-blog-person-reply-textArea {
+        display: flex !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .smartWay {
+    .smartWay-title {
+      flex-direction: column;
+      align-items: center;
+      padding: 0 !important;
+      margin-top: 20px;
+      .smartWay-title-sendEmail {
+        padding-left: 30px;
+        p {
+          font-size: 25px;
+        }
+        span {
+          font-size: 17px;
+        }
+      }
+    }
+    .smartWay-img {
+      display: flex;
+      justify-content: center;
+      img {
+        width: 50% !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .smartWay {
+    .smartWay-title {
+      flex-direction: column;
+      align-items: center;
+      padding: 0 !important;
+      margin-top: 20px;
+      .smartWay-title-sendEmail {
+        padding-left: 30px;
+        p {
+          font-size: 25px;
+        }
+        span {
+          font-size: 17px;
+        }
+      }
+    }
+    .smartWay-img {
+      display: flex;
+      justify-content: center;
+      img {
+        width: 50% !important;
       }
     }
   }

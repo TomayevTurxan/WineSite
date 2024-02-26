@@ -4,19 +4,10 @@ const SmartWay = () => {
   return (
     <section className="smartWay">
       <div className="container">
-        <div
-          className="row"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "row",
-            padding:"0 44px",
-            paddingTop:"10px"
-          }}
-        >
+        <div className="row">
           <div className="col-xl-8 ">
             <div className="smartWay-title">
-              <div className="col-xl-1">
+              <div className="col-xl-1 col-sm-1 col-1">
                 <svg viewBox="0 0 46 45">
                   <g>
                     <path
@@ -26,7 +17,7 @@ const SmartWay = () => {
                   </g>
                 </svg>
               </div>
-              <div className="col-xl-11">
+              <div className="col-xl-11 col-sm-12 col-12">
                 <div className="smartWay-title-sendEmail">
                   <p>A smarter way to drink wine</p>
                   <span>

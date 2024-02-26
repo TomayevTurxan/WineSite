@@ -3,12 +3,13 @@ import "./index.css";
 import axios from "axios";
 import { UserContext } from "../../../../context/UserContext";
 import toast from "react-hot-toast";
+import { FaTrashAlt } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
+import { AiOutlineLike } from "react-icons/ai";
 
-
-
-function CommentsSection({ commentId,allComments }) {
+function CommentsSection({ commentId, allComments, isLoggedIn }) {
   const [allRepliesofComment, setAllRepliesofComment] = useState([]);
-  const{user,setIsLoading,token} = useContext(UserContext);
+  const { user, setIsLoading, token } = useContext(UserContext);
   useEffect(() => {
     const allRepliesofComment = async () => {
       const res = await axios.get(`http://localhost:3000/${commentId}/replies`);
@@ -17,6 +18,7 @@ function CommentsSection({ commentId,allComments }) {
     };
     allRepliesofComment();
   }, []);
+  console.log("allreplis", allRepliesofComment);
   const likeReply = async (replyId) => {
     try {
       setIsLoading(true);
@@ -42,7 +44,33 @@ function CommentsSection({ commentId,allComments }) {
       toast.error(error.message);
     }
   };
-  console.log("allRepliesofComment", allRepliesofComment);
+
+  //deleteReply
+  //deleteReply
+  const deleteReply = async (replyId) => {
+    console.log("deleteReply", replyId);
+    if (token) {
+      try {
+        setIsLoading(true);
+        await axios.delete(`http://localhost:3000/replies/${replyId}/delete`, {
+          headers: {
+            Authorization: token,
+          },
+          data: {
+            userId: user.id,
+            commentId: commentId,
+          },
+        });
+        setIsLoading(false);
+        toast.success("Reply Deleted Successfully");
+        await allComments();
+      } catch (error) {
+        toast.error(error.message);
+      }
+    } else {
+      toast.error("You must be logged in firstly to perform this action");
+    }
+  };
   return (
     <div className="commentBlog">
       <div className="block" style={{ height: "500px", overflowY: "auto" }}>
@@ -84,21 +112,29 @@ function CommentsSection({ commentId,allComments }) {
                     </div>
                     <div className="content">
                       <p>{reply.text}</p>
-                      <div onClick={() => likeReply(reply._id)} className="like-reply">
-                        <svg width="20px" height="20px" viewBox="0 0 20 20">
-                          <path
-                            fill="none"
-                            stroke="#1e1e1e"
-                            d="M2,15.6h2.2c0.3,0,0.5-0.2,0.5-0.5V7.5C4.7,7.2,4.4,7,4.2,7H2"
-                          ></path>
-                          <path
-                            fill="none"
-                            stroke="#1e1e1e"
-                            d="M6.1,6.8l3.7-5.3c0,0,0.9-1.2,2.1-0.4s0.8,1.9,0.8,1.9L11.1,6c0,0-0.2,0.4,0.1,0.6c0.3,0.2,0.7,0.3,0.7,0.3 h4.7c0,0,1.5,0.1,1.5,1.4s-1.3,1.6-1.3,1.6s1.3,0.1,1.3,1.4s-2.1,1.5-2.1,1.5s1.2,0.1,1.2,1.4s-1.5,1.5-1.5,1.5H9.3 c0,0-3.1-0.5-3.2-2.6"
-                          ></path>
-                        </svg>
-                        <span>{reply.likes.length}</span>
-
+                      <div className="replyBtn">
+                        <div
+                          onClick={() => likeReply(reply._id)}
+                          className="like-reply"
+                        >
+                          {reply.likes &&
+                            reply.likes.find(
+                              (like) => like.from.id === user.id
+                            ) ? (
+                              <AiFillLike className="icon"/>
+                            ) : (
+                              <AiOutlineLike className="icon" />
+                            )}
+                          <span>{reply.likes.length}</span>
+                        </div>
+                        {isLoggedIn && user.id === reply.from.id && (
+                          <div
+                            onClick={() => deleteReply(reply._id)}
+                            className="comment-blog-person-comment"
+                          >
+                            <FaTrashAlt />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>

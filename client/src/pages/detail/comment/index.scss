@@ -77,21 +77,24 @@
       }
       .comment-blog-person-likeComment {
         display: flex;
-        align-items:center;
+        align-items: center;
         .comment-blog-person-like {
           @include likeComment;
         }
         .comment-blog-person-comment {
           @include likeComment;
         }
-        .all-comments{
-          .all-comments-form{
+        .all-comments {
+          .all-comments-form {
             margin-left: 10px;
-            span{
-              color:#8e041a;
+            span {
+              color: #8e041a;
               text-decoration: underline;
             }
           }
+        }
+        .icon {
+          font-size: 20px;
         }
       }
     }
@@ -104,27 +107,81 @@
         height: 30px;
         border-radius: 50%;
       }
-      .comment-blog-person-reply-textArea {
-        width: 100%;
-        textarea {
-          font-size: 20px;
-          line-height: 28px;
-          font-weight: 400;
-          font-family: inherit;
-          background-color: #f7f3f0;
-          color: #1e1e1e;
-          margin: 0;
-          padding: 16px 24px;
-          outline: none;
-          width: 100%;
-          border-radius: 16px;
-          border: 1px solid #f7f3f0;
-          border-bottom: 2px solid #eae0da;
-          height: 60px;
-          min-height: 40px;
-          overflow: hidden;
-        }
-      }
+    }
+  }
+}
+
+.comment-blog-person-reply-textArea {
+  margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 50px;
+  textarea {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+    font-family: inherit;
+    background-color: #f7f3f0;
+    color: #1e1e1e;
+    margin: 0;
+    padding: 16px 24px;
+    outline: none;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid #f7f3f0;
+    border-bottom: 2px solid #eae0da;
+    height: 60px;
+    min-height: 40px;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .comment-blog-person-reply-textArea {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    button{
+      bottom: -60%;
+      right: 0;
+    }
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .comment-blog-person-reply-textArea {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    button{
+      bottom: -60%;
+      right: 0;
+    }
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .comment-blog-person-reply-textArea {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    button{
+      bottom: -60%;
+      right: 0;
+    }
+  }
+}
+
+
+@media screen and (max-width: 1200px) {
+  .comment-blog-person-reply-textArea {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    button{
+      bottom: -60%;
+      right: 0;
     }
   }
 }
