@@ -8,9 +8,15 @@ wines_router.post("/wines", wines_controller.post);
 //cloudinary post
 wines_router.post(
   "/wines/postProduct",
-  upload.single("img"),
+  upload.fields([{ name: "img" }, { name: "countryImg" }]),
   wines_controller.winePost
 );
+
 wines_router.delete("/wines/:id", wines_controller.delete);
+wines_router.put(
+  "/wines/:id",
+  upload.single("img"),
+  wines_controller.wineUpdate
+);
 
 module.exports = wines_router;

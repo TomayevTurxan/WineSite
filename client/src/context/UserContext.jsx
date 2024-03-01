@@ -18,8 +18,25 @@ const  UserContextProvider = ({ children }) =>{
       ? JSON.parse(localStorage.getItem("user"))
       : null
   );
-
+  const [admin, setAdmin] = useState(
+    localStorage.getItem("admin")
+      ? JSON.parse(localStorage.getItem("admin"))
+      : null
+  );
+  const [revenue, setRevenue] = useState(
+    localStorage.getItem("revenue")
+      ? JSON.parse(localStorage.getItem("revenue"))
+      : null
+  );
+  const [saleTime, setSaleTime] = useState(
+    localStorage.getItem("saleTime")
+      ? JSON.parse(localStorage.getItem("saleTime"))
+      : null
+  );
   localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("admin", JSON.stringify(admin));
+  localStorage.setItem("revenue", JSON.stringify(revenue));
+  localStorage.setItem("saleTime", JSON.stringify(revenue));
 
   const decoded = token && jwtDecode(token);
 
@@ -84,9 +101,7 @@ const  UserContextProvider = ({ children }) =>{
             productId: productId,
           }
         );
-        res.status === 200
-          ? toast.success("Deleted from Wishlist")
-          : toast.success("Added To Wishlist");
+       console.log("res",res)
         setIsLoading(false);
         await fetchWishlistData();
       } catch (error) {
@@ -130,6 +145,8 @@ const  UserContextProvider = ({ children }) =>{
     setToken,
     user,
     setUser,
+    admin,
+    setAdmin,
     basketArr,
     setBasketArr,
     wishlistArr,
@@ -141,6 +158,10 @@ const  UserContextProvider = ({ children }) =>{
     handleBasket,
     handleWishlist,
     modifyCount,
+    revenue,
+    setRevenue,
+    setSaleTime,
+    saleTime,
   };
 
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;

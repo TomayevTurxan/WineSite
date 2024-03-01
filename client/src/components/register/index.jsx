@@ -183,8 +183,8 @@ function Register() {
                   value={formik.values.country}
                 >
                   <option value="">Select a country</option>
-                  <option value="Option 1">Option 1</option>
-                  <option value="Option 2">Option 2</option>
+                  <option value="Option 1">Azerbaijan</option>
+                  <option value="Option 2">Turkiye</option>
                 </select>
               </div>
               {formik.touched.country && formik.errors.country ? (

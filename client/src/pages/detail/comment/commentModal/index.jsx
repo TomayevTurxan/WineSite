@@ -46,7 +46,6 @@ function CommentsSection({ commentId, allComments, isLoggedIn }) {
   };
 
   //deleteReply
-  //deleteReply
   const deleteReply = async (replyId) => {
     console.log("deleteReply", replyId);
     if (token) {
@@ -175,7 +174,7 @@ function CommentsSection({ commentId, allComments, isLoggedIn }) {
         </div>
       </div>
     </div>
-  );
+  ) 
 }
 
 export default CommentsSection;

@@ -179,11 +179,12 @@ const users_controller = {
           lastName: user.lastName,
           country: user.country,
           isVerify: user.isVerify,
+          isAdmin: user.isAdmin,
         },
         JWT_SECRET,
         { expiresIn: "1h" }
       );
-
+        console.log("token",token)
       res.status(201).json({ message: "Login successful", token });
     } catch (error) {
       console.error("Login error:", error);

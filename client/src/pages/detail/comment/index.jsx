@@ -9,6 +9,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import Loader from "../../loading";
 import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 const Comment = ({ id, wine }) => {
   console.log("id", id);
   console.log("wine", wine);
@@ -22,7 +23,7 @@ const Comment = ({ id, wine }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const navigate = useNavigate();
   const isLoggedIn = user !== null;
 
   console.log("commentsOfWine", commentsOfWine);
@@ -150,9 +151,13 @@ const Comment = ({ id, wine }) => {
     const res = await axios.get(`http://localhost:3000/wines/${id}/comments`);
     setCommentsOfWine(res.data);
   };
+
+
+  //allComments
   useEffect(() => {
     allComments();
   }, []);
+  
   return (
     <section className="comment">
       <div className="container">
@@ -183,7 +188,13 @@ const Comment = ({ id, wine }) => {
                     color: "white",
                     borderRadius: "10px",
                   }}
-                  onClick={() => postComment()}
+                  onClick={() => {
+                    if (token) {
+                      postComment()
+                    } else {
+                      navigate("/login");
+                    }
+                  }}
                 >
                   send
                 </button>
@@ -195,7 +206,6 @@ const Comment = ({ id, wine }) => {
                       <div key={item._id} className="comment-blog-title">
                         <p>{item.comment.text}</p>
                       </div>
-
                       <div className="comment-blog-person">
                         <div className="comment-blog-person-info">
                           <img
@@ -210,7 +220,13 @@ const Comment = ({ id, wine }) => {
                         </div>
                         <div className="comment-blog-person-likeComment">
                           <div
-                            onClick={() => likeComment(item.comment._id)}
+                            onClick={() => {
+                              if (token) {
+                                likeComment(item.comment._id)
+                              } else {
+                                navigate("/login");
+                              }
+                            }}
                             className="comment-blog-person-like"
                           >
                             {item.comment.likes && user &&
@@ -226,7 +242,13 @@ const Comment = ({ id, wine }) => {
                           </div>
                           <div
                             className="comment-blog-person-comment"
-                            onClick={() => handleReplyClick(item.comment._id)}
+                            onClick={() => {
+                              if (token) {
+                                handleReplyClick(item.comment._id)
+                              } else {
+                                navigate("/login");
+                              }
+                            }}
                           >
                             <svg
                               x="0px"
@@ -292,7 +314,11 @@ const Comment = ({ id, wine }) => {
                                 borderRadius: "10px",
                               }}
                               onClick={() => {
-                                postReply(item.comment._id);
+                                if (token) {
+                                  postReply(item.comment._id);
+                                } else {
+                                  navigate("/login");
+                                }
                               }}
                             >
                               send

@@ -26,13 +26,18 @@ const FilterWine = () => {
     selectedGrapes,
     selectedRegions,
     setSelectedGrapes,
+    setSelectedRegions,
+    price,
+    setPrice,
+    setSelectedPrice,
+    selectedPrice,
   } = useContext(TypeContextItem);
   // const { handleBasket} = useContext(UserContext);
   const { wines } = useContext(WineContextItem);
-  const { handleBasket} = useContext(UserContext);
+  const { handleBasket } = useContext(UserContext);
   const [bestPicks, setBestPicks] = useState("");
-  const [value] = useState(4);
-  const [price, setPrice] = useState({ min: 10, max: 500 });
+  const [value] = useState([]);
+  // const [price, setPrice] = useState();
   const [filteredWines, setFilteredWines] = useState([]);
   const navigate = useNavigate();
 
@@ -43,7 +48,6 @@ const FilterWine = () => {
   const handleSliderChange = (value) => {
     setPrice({ min: value[0], max: value[1] });
   };
-
   useEffect(() => {
     let updatedWines = wines;
 
@@ -60,7 +64,7 @@ const FilterWine = () => {
     }
     if (selectedPairings.length > 0) {
       updatedWines = updatedWines.filter((wine) =>
-        selectedPairings.includes(wine.pairings.toLowerCase())
+        selectedPairings.includes(wine.pairings)
       );
     }
     if (selectedGrapes.length > 0) {
@@ -70,14 +74,17 @@ const FilterWine = () => {
     }
     if (selectedRegions.length > 0) {
       updatedWines = updatedWines.filter((wine) =>
-        selectedRegions.includes(wine.grapes)
+        selectedRegions.includes(wine.region)
       );
     }
 
+
+    // updatedWines = updatedWines.filter(
+    //   (wine) => wine.price >= selectedPrice.min && wine.price <= selectedPrice.max
+    // );
     updatedWines = updatedWines.filter(
       (wine) => wine.price >= price.min && wine.price <= price.max
     );
-
     setFilteredWines(updatedWines);
   }, [
     wines,
@@ -87,6 +94,7 @@ const FilterWine = () => {
     selectedPairings,
     selectedGrapes,
     selectedRegions,
+    selectedPrice,
   ]);
 
   useEffect(() => {
@@ -94,7 +102,16 @@ const FilterWine = () => {
     localStorage.setItem("selectedType", JSON.stringify(selectedType));
     localStorage.setItem("selectedPairings", JSON.stringify(selectedPairings));
     localStorage.setItem("selectedGrapes", JSON.stringify(selectedGrapes));
-  }, [selectedCountry, selectedType, selectedGrapes, selectedPairings]);
+    localStorage.setItem("selectedPrice", JSON.stringify(selectedPrice));
+    localStorage.setItem("price", JSON.stringify(price));
+  }, [
+    selectedCountry,
+    selectedType,
+    selectedGrapes,
+    selectedPairings,
+    selectedPrice,
+    price,
+  ]);
   //Token
   const token = getCookie("token");
   let decode;
@@ -131,30 +148,8 @@ const FilterWine = () => {
             Showing {filteredWines.length} wines between $10 - $50 rated above
             3.8 stars
           </h2>
-          <div className="filterWine-bestPicks">
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small" style={{}}>
-              <InputLabel id="demo-select-small-label">BestPicks</InputLabel>
-              <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                value={bestPicks}
-                label="BestPicks"
-                onChange={handleChange}
-              >
-                <MenuItem value="">
-                  <em>Sorted</em>
-                </MenuItem>
-                <MenuItem value="bestPicks">Best picks</MenuItem>
-                <MenuItem value="highestRated">Highest rated</MenuItem>
-                <MenuItem value="mostDiscounted">Most discounted</MenuItem>
-                <MenuItem value="lowestPrice">Price: Lowes first</MenuItem>
-                <MenuItem value="highestPrice">Price: Highest first</MenuItem>
-                <MenuItem value="popular">Popular</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
         </div>
-        <div className="row mt-5">
+        <div className="row mt-5 pt-5">
           <div className="col-xl-12 d-flex filterRes">
             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
               <div className="filterWine-wineTypes-head">
@@ -441,10 +436,12 @@ const FilterWine = () => {
                 <div className="filterWine-wineTypes-choice">
                   <Link>
                     <button
-                      className={selectedType === "Bordeaux" ? "selected" : ""}
+                      className={
+                        selectedRegions === "Bordeaux" ? "selected" : ""
+                      }
                       onClick={() =>
-                        setSelectedType(
-                          selectedType === "Bordeaux" ? "" : "Bordeaux"
+                        setSelectedRegions(
+                          selectedRegions === "Bordeaux" ? "" : "Bordeaux"
                         )
                       }
                     >
@@ -455,10 +452,12 @@ const FilterWine = () => {
                 <div className="filterWine-wineTypes-choice">
                   <Link>
                     <button
-                      className={selectedType === "Bourgogne" ? "selected" : ""}
+                      className={
+                        selectedRegions === "Bourgogne" ? "selected" : ""
+                      }
                       onClick={() =>
-                        setSelectedType(
-                          selectedType === "Bourgogne" ? "" : "Bourgogne"
+                        setSelectedRegions(
+                          selectedRegions === "Bourgogne" ? "" : "Bourgogne"
                         )
                       }
                     >
@@ -470,11 +469,11 @@ const FilterWine = () => {
                   <Link>
                     <button
                       className={
-                        selectedType === "Napa Valley" ? "selected" : ""
+                        selectedRegions === "Napa Valley" ? "selected" : ""
                       }
                       onClick={() =>
-                        setSelectedType(
-                          selectedType === "Napa Valley" ? "" : "Napa Valley"
+                        setSelectedRegions(
+                          selectedRegions === "Napa Valley" ? "" : "Napa Valley"
                         )
                       }
                     >
@@ -485,10 +484,12 @@ const FilterWine = () => {
                 <div className="filterWine-wineTypes-choice">
                   <Link>
                     <button
-                      className={selectedType === "Piemonte" ? "selected" : ""}
+                      className={
+                        selectedRegions === "Piemonte" ? "selected" : ""
+                      }
                       onClick={() =>
-                        setSelectedType(
-                          selectedType === "Piemonte" ? "" : "Piemonte"
+                        setSelectedRegions(
+                          selectedRegions === "Piemonte" ? "" : "Piemonte"
                         )
                       }
                     >
@@ -500,11 +501,13 @@ const FilterWine = () => {
                   <Link>
                     <button
                       className={
-                        selectedType === "Rhone Valley" ? "selected" : ""
+                        selectedRegions === "Rhone Valley" ? "selected" : ""
                       }
                       onClick={() =>
-                        setSelectedType(
-                          selectedType === "Rhone Valley" ? "" : "Rhone Valley"
+                        setSelectedRegions(
+                          selectedRegions === "Rhone Valley"
+                            ? ""
+                            : "Rhone Valley"
                         )
                       }
                     >
@@ -515,10 +518,12 @@ const FilterWine = () => {
                 <div className="filterWine-wineTypes-choice">
                   <Link>
                     <button
-                      className={selectedType === "Toscana" ? "selected" : ""}
+                      className={
+                        selectedRegions === "Toscana" ? "selected" : ""
+                      }
                       onClick={() =>
-                        setSelectedType(
-                          selectedType === "Toscana" ? "" : "Toscana"
+                        setSelectedRegions(
+                          selectedRegions === "Toscana" ? "" : "Toscana"
                         )
                       }
                     >
@@ -724,16 +729,17 @@ const FilterWine = () => {
                         <span>{wine.winery}</span>
                         <h5>{wine.grapes} 2022</h5>
                         <div className="filterWine-card-info-country">
-                          <img src="https://web-common.vivino.com/assets/countryFlags/FR-48.png" />
+                          <img src={wine.countryImg} />
                           <span>{wine.country}</span>
                         </div>
                       </div>
                       <div className="filterWine-card-price">
                         <div className="filterWine-card-rating">
-                          <h1>{wine.rating}</h1>
+                          <h1>{wine.rating} </h1>
+                          <span>rating</span>
                           <Rating
                             name="read-only"
-                            value={value}
+                            value={wine.rating}
                             readOnly
                             style={{
                               color: "#891826",

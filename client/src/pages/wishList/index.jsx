@@ -40,11 +40,8 @@ const Wishlist = () => {
   let decode;
   if (token) {
     decode = jwtDecode(token);
-    console.log("decode", decode.id);
   }
   async function handleDelete(id) {
-    console.log("decoededId", decoded.id);
-    console.log("iddddddddd", id);
     try {
       setIsLoading(true);
       await axios.delete(

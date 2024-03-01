@@ -132,7 +132,7 @@
   text-align: center;
   opacity: 0;
   visibility: hidden;
-  width: 800px;
+  width: 750px;
   background-color: #fff;
   padding: 20px 30px;
   .navigation-wineNav-ul {
@@ -272,11 +272,19 @@
     transform: translateY(0);
   }
 }
-
+.arrLength {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  padding: 0px 6px;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+}
 .basket-card {
   position: relative;
   background-color: white;
-  .basket-card-title {
+  .basket-card-title-res {
     z-index: 999;
     position: absolute;
     width: 300px;
@@ -309,29 +317,29 @@
           height: 100px;
         }
       }
-      .basket-button {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-        a {
-          .shopMore {
-            @include basket-btn();
-            background-color: #ffffff;
-            &:hover {
-              background-color: #f0f0f0;
-              color: #1e1e1e;
-            }
+    }
+    .basket-button {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      a {
+        .shopMore {
+          @include basket-btn();
+          background-color: #ffffff;
+          &:hover {
+            background-color: #f0f0f0;
+            color: #1e1e1e;
           }
-          .goTo {
-            @include basket-btn();
-            color: white;
-            background-color: #006b4d;
+        }
+        .goTo {
+          @include basket-btn();
+          color: white;
+          background-color: #006b4d;
+          border-color: #006b4d;
+          &:hover {
             border-color: #006b4d;
-            &:hover {
-              border-color: #006b4d;
-              background-color: #006b4d;
-              color: #f0f0f0;
-            }
+            background-color: #006b4d;
+            color: #f0f0f0;
           }
         }
       }

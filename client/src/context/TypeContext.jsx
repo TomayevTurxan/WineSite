@@ -27,6 +27,16 @@ const TypeContextItemProvider = ({ children }) => {
       ? JSON.parse(localStorage.getItem("selectedRegions"))
       : []
   );
+  const [selectedPrice, setSelectedPrice] = useState(
+    JSON.parse(localStorage.getItem("selectedPrice"))
+      ? JSON.parse(localStorage.getItem("selectedPrice"))
+      : []
+  );
+  const [price, setPrice] = useState(
+    JSON.parse(localStorage.getItem("price"))
+      ? JSON.parse(localStorage.getItem("price"))
+      : { min: 10, max: 500 }
+  );
   return (
     <TypeContextItem.Provider
       value={{
@@ -35,11 +45,15 @@ const TypeContextItemProvider = ({ children }) => {
         selectedPairings,
         selectedGrapes,
         selectedRegions,
+        selectedPrice,
+        price,
+        setPrice,
         setSelectedType,
         setSelectedCountry,
         setSelectedPairings,
         setSelectedGrapes,
         setSelectedRegions,
+        setSelectedPrice,
       }}
     >
       {children}

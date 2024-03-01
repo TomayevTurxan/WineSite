@@ -10,6 +10,10 @@ import PaymentForm from "../pages/payment";
 import Wishlist from "../pages/wishList";
 import AdminHome from "../admin/pages/home";
 import AdminRoot from "../admin/AdminRoot";
+import Analytics from "../admin/pages/analytics";
+import Users from "../admin/pages/users";
+import Wines from "../admin/pages/wines";
+import AddProduct from "../admin/pages/addProduct";
 
 export const ROUTES = [
   {
@@ -61,6 +65,22 @@ export const ROUTES = [
       {
         path: "/admin/home",
         element: <AdminHome/>,
+      },
+      {
+        path: "/admin/analytics",
+        element: <Analytics/>,
+      },
+      {
+        path: "/admin/users",
+        element: <Users/>,
+      },
+      {
+        path: "/admin/wines",
+        element: <Wines/>,
+      },
+      {
+        path: "/admin/addProduct",
+        element: <AddProduct/>,
       },
     ]
   }

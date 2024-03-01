@@ -1,81 +1,171 @@
-import { Link } from "react-router-dom";
-import { MdOutlineDashboard } from "react-icons/md";
-import { SiSimpleanalytics } from "react-icons/si";
-import { useEffect, useRef, useMemo } from "react"; // Import useRef and useMemo
+import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
-import "./index.scss";
+import axios from "axios";
+import Dashboard from "../dashboard";
 
 const AdminHome = () => {
-  const chartRef = useRef(null);
+  const pieChartRef = useRef(null);
+  const barChartRef = useRef(null);
+  const [wineData, setWineData] = useState([]);
 
-  const data = useMemo(
-    () => ({
-      labels: ["Germany", "Blue", "Yellow"],
-      datasets: [
-        {
-          label: "My First Dataset",
-          data: [300, 50, 100],
-          backgroundColor: [
-            "rgb(255, 99, 132)",
-            "rgb(54, 162, 235)",
-            "rgb(255, 205, 86)",
-          ],
-          hoverOffset: 4,
-        },
-      ],
-    }),
-    []
-  ); 
   useEffect(() => {
-    const ctx = document.getElementById("myChart");
-    if (chartRef.current) {
-      chartRef.current.destroy();
-    }
-    chartRef.current = new Chart(ctx, {
-      type: "doughnut",
-      data: data,
-    });
-
-    return () => {
-      if (chartRef.current) {
-        chartRef.current.destroy();
+    const fetchWineData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/wines");
+        setWineData(response.data.data);
+      } catch (error) {
+        console.error(error);
       }
     };
-  }, [data, chartRef]); 
+
+    fetchWineData();
+  }, []);
+
+  useEffect(() => {
+    if (pieChartRef.current && wineData.length > 0) {
+      if (pieChartRef.current.chart) {
+        pieChartRef.current.chart.destroy();
+      }
+      renderPieChart();
+    }
+  }, [wineData]);
+
+  useEffect(() => {
+    if (barChartRef.current && wineData.length > 0) {
+      if (barChartRef.current.chart) {
+        barChartRef.current.chart.destroy();
+      }
+      renderBarChart();
+    }
+  }, [wineData]);
+
+  const renderPieChart = () => {
+    const ctx = pieChartRef.current.getContext("2d");
+    const countries = {};
+    const colors = generateRandomColors(wineData.length);
+
+    wineData.forEach((wine, index) => {
+      const country = wine.country;
+      if (!countries[country]) {
+        countries[country] = {
+          count: 1,
+          color: colors[index],
+        };
+      } else {
+        countries[country].count++;
+      }
+    });
+
+    const labels = Object.keys(countries);
+    const data = labels.map((country) => countries[country].count);
+    const backgroundColor = labels.map((country) => countries[country].color);
+
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Wines by Country",
+            data: data,
+            backgroundColor: backgroundColor,
+            hoverOffset: 4,
+          },
+        ],
+      },
+    });
+  };
+
+  const calculateMonthlySales = (data) => {
+    const monthlySales = {
+      January: 0,
+      February: 0,
+      March: 0,
+      April: 0,
+      May: 0,
+      June: 0,
+      July: 0,
+      August: 0,
+      September: 0,
+      October: 0,
+      November: 0,
+      December: 0,
+    };
+
+    data.forEach((wine) => {
+      const date = new Date(wine.createdAt);
+      const month = date.getMonth(); 
+      const monthName = new Intl.DateTimeFormat("en-US", {
+        month: "long",
+      }).format(new Date(0, month)); 
+      monthlySales[monthName]++; 
+    });
+
+    return monthlySales;
+  };
+
+  const renderBarChart = () => {
+    const ctx = barChartRef.current.getContext("2d");
+    const monthlySales = calculateMonthlySales(wineData);
+    const labels = Object.keys(monthlySales);
+    const data = Object.values(monthlySales);
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Monthly Sales",
+            data: data,
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgb(54, 162, 235)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  };
+
+  const generateRandomColors = (numColors) => {
+    const colors = [];
+    for (let i = 0; i < numColors; i++) {
+      const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)})`;
+      colors.push(randomColor);
+    }
+    return colors;
+  };
+
   return (
     <section className="adminMain">
       <div className="admin-head">
-        <div className="dashboard">
-          <div className="img">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 22">
-              <path
-                fill="#ba1628"
-                d="M1677.87,450.937h5.57V429.16h-5.57v21.777Zm36.84,0.006,5.56-.012V429.172h-5.56v21.771Zm-63.73-21.792,5.59,0,5.45,12.555h0.38l5.54-12.559,5.71-.008-9.52,21.8-3.54.012Zm36.77,0.018,5.57,0.007,5.43,12.534h0.41l5.49-12.541,5.71,0.007-9.47,21.761-3.56.011Zm39.72-.018h3.92c0.5,0.7.93,1.331,1.37,1.9h0.38c5.56-4.223,14.08-1.577,14.08,5.585l-0.01,14.305h-5.42l-0.05-13.423c-0.27-4.463-6.9-5.1-8.19-.561a14.126,14.126,0,0,0-.41,4.409l0.01,9.586-5.71-.011Zm37-.162c6.35,0,11.53,4.944,11.53,10.983a11.3,11.3,0,0,1-11.53,11.037v-4.57a6.321,6.321,0,0,0,0-12.641v-4.809Zm0,22.02a11.3,11.3,0,0,1-11.53-11.037c0-6.039,5.18-10.983,11.53-10.983V433.8a6.321,6.321,0,0,0,0,12.641v4.57Z"
-                transform="translate(-1651 -429)"
-              ></path>
-            </svg>
-          </div>
-          <div className="links">
-            <ul>
-              <li>
-                <Link>
-                  <MdOutlineDashboard />
-                  <span>Dashboart</span>
-                </Link>
-              </li>
-              <li>
-                <Link>
-                  <SiSimpleanalytics />
-                  <span>Analytics</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <Dashboard />
         <div className="statistic">
-          <h3>Statistics of countries according to wines</h3>
           <div className="pie-chart">
-            <canvas id="myChart" width="200" height="200"></canvas>
+          <h3>Statistics of countries according to wines</h3>
+            <canvas
+              id="pieChart"
+              ref={pieChartRef}
+              width="200"
+              height="200"
+            ></canvas>
+          </div>
+          <div className="bar-chart">
+            <canvas
+              id="barChart"
+              ref={barChartRef}
+              width="400"
+              height="200"
+            ></canvas>
           </div>
         </div>
       </div>
