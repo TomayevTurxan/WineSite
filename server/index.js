@@ -1,8 +1,8 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
-const bodyParser = require('body-parser');
-const Stripe = require('stripe')(process.env.SECRET_KEY);
+const bodyParser = require("body-parser");
+const Stripe = require("stripe")(process.env.SECRET_KEY);
 const users_router = require("./routes/users.router");
 const cors = require("cors");
 const wines_router = require("./routes/wines.router");
@@ -16,31 +16,29 @@ app.use(express.json());
 app.use(cors());
 app.use("/", users_router);
 app.use("/", wines_router);
-app.use("/",  basket_router);
-app.use("/",  wishlist_router);
-app.use("/",  comments_router);
+app.use("/", basket_router);
+app.use("/", wishlist_router);
+app.use("/", comments_router);
 
-app.post('/payment', async (req, res) => {
+app.post("/payment", async (req, res) => {
   let status, error;
   const { token, amount } = req.body;
   try {
     await Stripe.charges.create({
       source: token.id,
       amount,
-      currency: 'usd',
+      currency: "usd",
     });
-    status = 'success';
+    status = "success";
   } catch (error) {
     console.log(error);
-    status = 'Failure';
+    status = "Failure";
   }
   res.json({ error, status });
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://Turxan:Turxan123@cluster0.z8qtytn.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
