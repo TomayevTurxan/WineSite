@@ -1,9 +1,6 @@
 require("dotenv").config();
-
-const module = require('module');
-module.Module._extensions['.js'] = function(module, filename) {
-  const content = fs.readFileSync(filename, 'utf8');
-  module._compile(content, filename);
+require('module').Module._extensions['.js'] = function (module, filename) { 
+  module._compile(require('fs').readFileSync(filename, 'utf8'), filename);
 };
 const mongoose = require("mongoose");
 const express = require("express");
@@ -42,6 +39,7 @@ app.post("/payment", async (req, res) => {
   }
   res.json({ error, status });
 });
+
 
 mongoose
   .connect(process.env.MONGODB_URI)
