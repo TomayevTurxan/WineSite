@@ -1,4 +1,10 @@
 require("dotenv").config();
+
+const module = require('module');
+module.Module._extensions['.js'] = function(module, filename) {
+  const content = fs.readFileSync(filename, 'utf8');
+  module._compile(content, filename);
+};
 const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
