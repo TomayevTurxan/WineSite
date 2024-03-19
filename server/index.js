@@ -10,13 +10,7 @@ const basket_router = require("./routes/basketRouter");
 const wishlist_router = require("./routes/wishListRouter");
 const comments_router = require("./routes/commentRouter");
 const app = express();
-const corsConfig = {
-  origin: "*",
-  credential: true,
-  methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
-};
-app.options("", cors(corsConfig));
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
