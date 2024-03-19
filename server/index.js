@@ -15,6 +15,7 @@ const corsConfig = {
   credential: true,
   methods: ["GET","PUT","PATCH","POST","DELETE"]
 };
+app.options("",cors(corsConfig))
 app.use(cors(corsConfig));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
