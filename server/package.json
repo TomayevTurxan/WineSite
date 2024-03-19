@@ -7,8 +7,9 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "nodemon index.js",
-    "vercel-build":"echo hello"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
