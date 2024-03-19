@@ -13,9 +13,9 @@ const app = express();
 const corsConfig = {
   origin: "*",
   credential: true,
-  methods: ["GET","PUT","PATCH","POST","DELETE"]
+  methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
 };
-app.options("",cors(corsConfig))
+app.options("", cors(corsConfig));
 app.use(cors(corsConfig));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,3 +50,5 @@ mongoose
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
+module.exports = app;
