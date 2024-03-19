@@ -10,10 +10,15 @@ const basket_router = require("./routes/basketRouter");
 const wishlist_router = require("./routes/wishListRouter");
 const comments_router = require("./routes/commentRouter");
 const app = express();
+const corsConfig = {
+  origin: "*",
+  credential: true,
+  methods: ["GET","PUT","PATCH","POST","DELETE"]
+};
+app.use(cors(corsConfig));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
 app.use("/", users_router);
 app.use("/", wines_router);
 app.use("/", basket_router);
@@ -36,7 +41,6 @@ app.post("/payment", async (req, res) => {
   }
   res.json({ error, status });
 });
-
 
 mongoose
   .connect(process.env.MONGODB_URI)
