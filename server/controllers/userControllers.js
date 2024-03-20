@@ -82,7 +82,7 @@ const users_controller = {
         subject: "Verify your Account news project",
         text: "That was easy!",
         html: `  <h1 style="color: #9a1221;">Vivino</h1>
-        Click here to verify your account: http://localhost:3000/users/verify/${token}
+        Click here to verify your account: https://winesite-2.onrender.com/users/verify/${token}
         <div style="margin-top: 15px;"> 
         <span>Sincerely :Vivino service</span><br>
         <span>Contact: <span style="color: #9a1221;">vivinowine@gmail.com</span></span>

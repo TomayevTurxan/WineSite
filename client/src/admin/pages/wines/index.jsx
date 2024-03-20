@@ -112,7 +112,7 @@ const Wines = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3000/wines");
+      const response = await axios.get("https://winesite-2.onrender.com/wines");
       setData(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -132,7 +132,7 @@ const Wines = () => {
   const handleDelete = async (wineId) => {
     console.log("wineId", wineId);
     console.log("user._id", user._id);
-    const res = await axios.delete(`http://localhost:3000/wines/${wineId}`, {
+    const res = await axios.delete(`https://winesite-2.onrender.com/wines/${wineId}`, {
       data: { userId: user._id },
       headers: {
         Authorization: token,
@@ -181,7 +181,7 @@ const Wines = () => {
       }
 
       const res = await axios.put(
-        `http://localhost:3000/wines/${currentWine._id}`,
+        `https://winesite-2.onrender.com/wines/${currentWine._id}`,
         updateFormData,
         {
           headers: {

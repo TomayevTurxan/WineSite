@@ -11,7 +11,7 @@ const AdminHome = () => {
   useEffect(() => {
     const fetchWineData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/wines");
+        const response = await axios.get("https://winesite-2.onrender.com/wines");
         setWineData(response.data.data);
       } catch (error) {
         console.error(error);

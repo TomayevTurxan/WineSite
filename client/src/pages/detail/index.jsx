@@ -31,7 +31,7 @@ const Detail = () => {
   useEffect(() => {
     const data = async () => {
       setIsLoading(true);
-      const res = await axios.get(`http://localhost:3000/wines/${id}`);
+      const res = await axios.get(`https://winesite-2.onrender.com/wines/${id}`);
       setIsLoading(false);
       setWine(res.data);
     };

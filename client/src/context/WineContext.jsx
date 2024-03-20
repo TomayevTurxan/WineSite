@@ -7,7 +7,7 @@ const WineContextItemProvider = ({ children }) => {
 
   useEffect(() => {
     // Fetch wines data from the API using Axios
-    axios.get("http://localhost:3000/wines")
+    axios.get("https://winesite-2.onrender.com/wines")
       .then(response => {
         setWines(response.data.data);
       })

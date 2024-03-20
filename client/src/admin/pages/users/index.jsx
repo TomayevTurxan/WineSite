@@ -73,7 +73,7 @@ const Users = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3000/users");
+      const response = await axios.get("https://winesite-2.onrender.com/users");
       setData(response.data);
       setLoading(false);
     } catch (error) {
@@ -91,7 +91,7 @@ const Users = () => {
 
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`http://localhost:3000/users/${userId}`);
+      await axios.delete(`https://winesite-2.onrender.com/users/${userId}`);
       fetchData();
     } catch (error) {
       console.error("Error deleting user:", error);

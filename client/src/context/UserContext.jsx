@@ -44,7 +44,7 @@ const  UserContextProvider = ({ children }) =>{
     try {
       if (user) {
         const res = await axios.get(
-          `http://localhost:3000/users/${user.id}/basket`
+          `https://winesite-2.onrender.com/users/${user.id}/basket`
         );
         setBasketArr(res.data);
       }
@@ -58,7 +58,7 @@ const  UserContextProvider = ({ children }) =>{
       if (user) {
         //   console.log("asasassas",user)
         const res = await axios.get(
-          `http://localhost:3000/users/${user.id}/wishlist`
+          `https://winesite-2.onrender.com/users/${user.id}/wishlist`
         );
         setWishlistArr(res.data);
         console.log("whishlist",wishlistArr)
@@ -73,7 +73,7 @@ const  UserContextProvider = ({ children }) =>{
       try {
         setIsLoading(true);
         const res = await axios.post(
-          `http://localhost:3000/users/${user.id}/addBasket`,
+          `https://winesite-2.onrender.com/users/${user.id}/addBasket`,
           {
             productId: productId,
           }
@@ -96,7 +96,7 @@ const  UserContextProvider = ({ children }) =>{
       try {
         setIsLoading(true);
         const res = await axios.post(
-          `http://localhost:3000/users/${user.id}/addWishlist`,
+          `https://winesite-2.onrender.com/users/${user.id}/addWishlist`,
           {
             productId: productId,
           }
@@ -116,7 +116,7 @@ const  UserContextProvider = ({ children }) =>{
         // console.log("id", id);
         // console.log("userId", decoded.id);
         await axios.post(
-          `http://localhost:3000/users/${decoded.id}/increaseCount`,
+          `https://winesite-2.onrender.com/users/${decoded.id}/increaseCount`,
           {
             productId: id,
           }
@@ -125,7 +125,7 @@ const  UserContextProvider = ({ children }) =>{
       } else {
         setIsLoading(true);
         const res = await axios.post(
-          `http://localhost:3000/users/${decoded.id}/decreaseCount`,
+          `https://winesite-2.onrender.com/users/${decoded.id}/decreaseCount`,
           {
             productId: id,
           }

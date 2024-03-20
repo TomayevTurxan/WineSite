@@ -53,7 +53,7 @@ const Basket = () => {
     try {
       setIsLoading(true);
       await axios.delete(
-        `http://localhost:3000/users/${decoded.id}/deleteBasket`,
+        `https://winesite-2.onrender.com/users/${decoded.id}/deleteBasket`,
         {
           data: {
             productId: id,

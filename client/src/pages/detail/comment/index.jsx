@@ -41,7 +41,7 @@ const Comment = ({ id, wine }) => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `http://localhost:3000/comments/${likeId}/like`,
+        `https://winesite-2.onrender.com/comments/${likeId}/like`,
         {
           userId: user.id,
         },
@@ -72,7 +72,7 @@ const Comment = ({ id, wine }) => {
     try {
       setIsLoading(true);
       await axios.post(
-        `http://localhost:3000/wines/${id}/addComment`,
+        `https://winesite-2.onrender.com/wines/${id}/addComment`,
         {
           text: commentText,
         },
@@ -100,7 +100,7 @@ const Comment = ({ id, wine }) => {
     try {
       setIsLoading(true);
       await axios.post(
-        `http://localhost:3000/comments/${commentId}/replyComment`,
+        `https://winesite-2.onrender.com/comments/${commentId}/replyComment`,
         {
           text: replyText,
         },
@@ -125,7 +125,7 @@ const Comment = ({ id, wine }) => {
       try {
         setIsLoading(true);
         await axios.delete(
-          `http://localhost:3000/comments/${commentId}/delete`,
+          `https://winesite-2.onrender.com/comments/${commentId}/delete`,
           {
             headers: {
               Authorization: token,
@@ -148,7 +148,7 @@ const Comment = ({ id, wine }) => {
 
   //allComments
   const allComments = async () => {
-    const res = await axios.get(`http://localhost:3000/wines/${id}/comments`);
+    const res = await axios.get(`https://winesite-2.onrender.com/wines/${id}/comments`);
     setCommentsOfWine(res.data);
   };
 

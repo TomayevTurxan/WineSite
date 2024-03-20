@@ -45,7 +45,7 @@ const Wishlist = () => {
     try {
       setIsLoading(true);
       await axios.delete(
-        `http://localhost:3000/users/${decoded.id}/deleteWishlist`,
+        `https://winesite-2.onrender.com/users/${decoded.id}/deleteWishlist`,
         {
           data: {
             productId: id,

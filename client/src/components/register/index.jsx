@@ -33,7 +33,7 @@ function Register() {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(
-          "http://localhost:3000/users/register",
+          "https://winesite-2.onrender.com/users/register",
           values
         );
         if (response.status === 201) {

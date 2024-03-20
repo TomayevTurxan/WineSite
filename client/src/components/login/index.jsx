@@ -31,7 +31,7 @@ function Login() {
       // console.log("values", values);
       formik.resetForm();
       try {
-        const res = await axios.post("http://localhost:3000/users/login", values);
+        const res = await axios.post("https://winesite-2.onrender.com/users/login", values);
         toast.success("Successfully Logined!");
         res.status === 201 && setToken(res.data.token);
         res.status === 201 && setCookie("token", res.data.token, "60h");

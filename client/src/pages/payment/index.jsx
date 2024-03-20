@@ -34,7 +34,7 @@ function PaymentForm() {
   const payNow = async (token) => {
     try {
       const response = await axios({
-        url: "http://localhost:3000/payment",
+        url: "https://winesite-2.onrender.com/payment",
         method: "post",
         data: {
           amount: priceForStripe,

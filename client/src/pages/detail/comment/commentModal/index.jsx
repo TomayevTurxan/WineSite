@@ -12,7 +12,7 @@ function CommentsSection({ commentId, allComments, isLoggedIn }) {
   const { user, setIsLoading, token } = useContext(UserContext);
   useEffect(() => {
     const allRepliesofComment = async () => {
-      const res = await axios.get(`http://localhost:3000/${commentId}/replies`);
+      const res = await axios.get(`https://winesite-2.onrender.com/${commentId}/replies`);
       setAllRepliesofComment(res.data);
       console.log("resdata", res.data);
     };
@@ -23,7 +23,7 @@ function CommentsSection({ commentId, allComments, isLoggedIn }) {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `http://localhost:3000/replies/${commentId}/like`,
+        `https://winesite-2.onrender.com/replies/${commentId}/like`,
         {
           userId: user.id,
           replyId: replyId,
@@ -51,7 +51,7 @@ function CommentsSection({ commentId, allComments, isLoggedIn }) {
     if (token) {
       try {
         setIsLoading(true);
-        await axios.delete(`http://localhost:3000/replies/${replyId}/delete`, {
+        await axios.delete(`https://winesite-2.onrender.com/replies/${replyId}/delete`, {
           headers: {
             Authorization: token,
           },

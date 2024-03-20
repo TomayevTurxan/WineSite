@@ -50,7 +50,7 @@ const AddProduct = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/wines");
+      const response = await axios.get("https://winesite-2.onrender.com/wines");
       setData(response.data.data);
     } catch (error) {
       console.error("Wrong details about a wine:", error);
@@ -118,7 +118,7 @@ const AddProduct = () => {
       }
 
       const res = await axios.post(
-        `http://localhost:3000/wines/postProduct`,
+        `https://winesite-2.onrender.com/wines/postProduct`,
         postFormData,
         {
           headers: {
