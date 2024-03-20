@@ -47,10 +47,11 @@ const users_controller = {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      // console.log(hashedPassword);
+      console.log(hashedPassword);
       const token = jwt.sign({ email: req.body.email }, "JWT_SECRET", {
         expiresIn: "1h",
       });
+      console.log("tokne",token)
       res.cookie("token", token, { httpOnly: true, secure: true });
       const user = new UserModel({
         firstName,
@@ -64,20 +65,20 @@ const users_controller = {
         password: hashedPassword,
         confirmPassword: hashedPassword,
       });
-
+      console.log("user",user)
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         service: "gmail",
         port: 465,
         secure: true,
         auth: {
-          user: "tu7hfn0xh@code.edu.az",
-          pass: "duxr bncf zpac czyw",
+          user: "ilkin656.u@gmail.com",
+          pass: "ttkn adpd nykx ryuf",
         },
       });
 
       const mailData = {
-        from: "tu7hfn0xh@code.edu.az",
+        from: "ilkin656.u@gmail.com",
         to: req.body.email,
         subject: "Verify your Account news project",
         text: "That was easy!",
@@ -91,9 +92,7 @@ const users_controller = {
       };
       try {
         await transporter.sendMail(mailData);
-        console.log("Email sent successfully");
       } catch (error) {
-        console.error("Error sending email:", error);
         return res.status(500).send({
           message: "Error sending email",
           error: error.message,

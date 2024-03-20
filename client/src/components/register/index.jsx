@@ -31,11 +31,13 @@ function Register() {
         .required("Confirm Password is required"),
     }),
     onSubmit: async (values) => {
+      console.log("values",values)
       try {
         const response = await axios.post(
           "https://winesite-2.onrender.com/users/register",
           values
         );
+        console.log("res",response)
         if (response.status === 201) {
           toast.success("Registration successfully!");
           formik.resetForm();
